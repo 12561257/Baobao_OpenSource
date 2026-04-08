@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>拍照识别 - 智能减脂助理</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #000000;
+      --white: #ffffff;
+      --gray-333: #333333;
+      --gray-666: #666666;
+      --gray-999: #999999;
+      --gray-ccc: #cccccc;
+      --gray-eee: #eeeeee;
+      --gray-f5: #f5f5f5;
+      --font-serif: 'Playfair Display', 'Georgia', serif;
+      --font-sans: 'Inter', 'system-ui', sans-serif;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--white);
+      color: var(--black);
+      width: 393px;
+      height: 852px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* iOS 状态栏 */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 28px 0;
+      height: 54px;
+      flex-shrink: 0;
+    }
+    .status-bar .time { font-size: 15px; font-weight: 600; letter-spacing: 0.02em; }
+    .status-bar .icons { display: flex; align-items: center; gap: 6px; }
+    .status-bar .icons svg { width: 16px; height: 16px; }
+
+    /* ===== 页面切换控制 ===== */
+    .page {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+    }
+    .page.active {
+      display: flex;
+    }
+
+    /* ===== 拍照页面 ===== */
+    .camera-page .header {
+      padding: 8px 32px 0;
+      text-align: center;
+    }
+    .camera-page .header h1 {
+      font-family: var(--font-serif);
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .camera-page .header .subtitle {
+      font-size: 12px;
+      color: var(--gray-999);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .camera-viewfinder {
+      flex: 1;
+      margin: 20px 24px;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      background: var(--gray-f5);
+    }
+    .camera-viewfinder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    /* 取景框角标 */
+    .viewfinder-corner {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-color: var(--white);
+      border-style: solid;
+    }
+    .viewfinder-corner.tl { top: 16px; left: 16px; border-width: 2px 0 0 2px; }
+    .viewfinder-corner.tr { top: 16px; right: 16px; border-width: 2px 2px 0 0; }
+    .viewfinder-corner.bl { bottom: 16px; left: 16px; border-width: 0 0 2px 2px; }
+    .viewfinder-corner.br { bottom: 16px; right: 16px; border-width: 0 2px 2px 0; }
+
+    /* 扫描线动画 */
+    .scan-line {
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(0,0,0,0.3), transparent);
+      animation: scanMove 2.5s ease-in-out infinite;
+    }
+    @keyframes scanMove {
+      0% { top: 15%; }
+      50% { top: 80%; }
+      100% { top: 15%; }
+    }
+
+    /* 快门按钮 */
+    .shutter-area {
+      padding: 20px 0 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+    }
+    .shutter-btn {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--black);
+      border: 3px solid var(--gray-333);
+      cursor: pointer;
+      transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    .shutter-btn:hover {
+      transform: scale(0.95);
+    }
+    .shutter-btn:active {
+      transform: scale(0.9);
+    }
+    .shutter-btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--white);
+    }
+    .shutter-side-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--gray-ccc);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .shutter-side-btn:hover {
+      border-color: var(--black);
+    }
+    .shutter-side-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--gray-666);
+      fill: none;
+    }
+
+    /* ===== 识别结果页面 ===== */
+    .result-page .header {
+      padding: 8px 32px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .result-page .header h1 {
+      font-family: var(--font-serif);
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .result-page .header .retake {
+      font-size: 12px;
+      color: var(--gray-999);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .result-page .header .retake:hover {
+      color: var(--black);
+    }
+
+    .result-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 32px 0;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .result-content::-webkit-scrollbar { display: none; }
+
+    /* 食物列表 - 编辑排版风格 */
+    .food-list {
+      margin-top: 0;
+    }
+    .food-item {
+      display: grid;
+      grid-template-columns: 28px 1fr auto auto;
+      gap: 0 12px;
+      align-items: baseline;
+      padding: 14px 0;
+      border-bottom: 0.5px solid var(--gray-eee);
+    }
+    .food-index {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--gray-999);
+      letter-spacing: 0.02em;
+    }
+    .food-name {
+      font-family: var(--font-serif);
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--black);
+    }
+    .food-weight {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--gray-666);
+      text-align: right;
+    }
+    .food-cal {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--black);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    /* 总计分隔线 */
+    .total-divider {
+      margin-top: 8px;
+      border-top: 2px solid var(--black);
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .total-label {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--black);
+    }
+    .total-value {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--black);
+    }
+    .total-value span {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--gray-666);
+      letter-spacing: 0.06em;
+      margin-left: 4px;
+    }
+
+    /* AI 评语 */
+    .ai-comment {
+      margin-top: 28px;
+      font-family: var(--font-serif);
+      font-size: 14px;
+      font-weight: 400;
+      font-style: italic;
+      line-height: 1.7;
+      color: var(--gray-666);
+      border-left: 2px solid var(--black);
+      padding-left: 16px;
+    }
+
+    /* 确认按钮 */
+    .confirm-area {
+      padding: 24px 32px 0;
+      flex-shrink: 0;
+    }
+    .btn-confirm {
+      width: 100%;
+      padding: 16px 0;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-align: center;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-confirm:hover {
+      background: var(--gray-333);
+      transform: scale(0.98);
+    }
+
+    /* 底部 Tab Bar */
+    .tab-bar {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0 28px;
+      border-top: 0.5px solid var(--gray-eee);
+      background: var(--white);
+    }
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+    .tab-item:hover { opacity: 0.6; }
+    .tab-item .tab-icon svg {
+      width: 18px; height: 18px; stroke: var(--gray-999); fill: none; stroke-width: 1.5;
+    }
+    .tab-item .tab-label {
+      font-size: 10px; font-weight: 400; color: var(--gray-999); letter-spacing: 0.04em;
+    }
+    .tab-item.active .tab-icon svg { stroke: var(--black); stroke-width: 2; }
+    .tab-item.active .tab-label { color: var(--black); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <!-- iOS 状态栏 -->
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <div class="icons">
+      <svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="0.5" fill="#000"/><rect x="5" y="5" width="3" height="7" rx="0.5" fill="#000"/><rect x="10" y="2" width="3" height="10" rx="0.5" fill="#000"/><rect x="15" y="0" width="3" height="12" rx="0.5" fill="#000"/></svg>
+      <svg viewBox="0 0 16 12"><path d="M8 10.5a1 1 0 110 2 1 1 0 010-2zM4.5 8.5C5.5 7.2 6.7 6.5 8 6.5s2.5.7 3.5 2M2 5.5C3.7 3.5 5.7 2.5 8 2.5s4.3 1 6 3" stroke="#000" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>
+      <svg viewBox="0 0 28 13"><rect x="0" y="0.5" width="24" height="12" rx="2.5" stroke="#000" stroke-width="1" fill="none"/><rect x="2" y="2.5" width="18" height="8" rx="1" fill="#000"/><rect x="25" y="4" width="2.5" height="5" rx="1" fill="#000"/></svg>
+    </div>
+  </div>
+
+  <!-- ===== 页面一：拍照取景 ===== -->
+  <div class="page camera-page active" id="cameraPage">
+    <div class="header">
+      <h1>Record</h1>
+      <p class="subtitle">对准食物，自动识别</p>
+    </div>
+
+    <div class="camera-viewfinder">
+      <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=600&fit=crop" alt="食物照片">
+      <div class="viewfinder-corner tl"></div>
+      <div class="viewfinder-corner tr"></div>
+      <div class="viewfinder-corner bl"></div>
+      <div class="viewfinder-corner br"></div>
+      <div class="scan-line"></div>
+    </div>
+
+    <div class="shutter-area">
+      <button class="shutter-side-btn" title="相册">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      </button>
+      <button class="shutter-btn" onclick="showResult()" title="拍照"></button>
+      <button class="shutter-side-btn" title="切换摄像头">
+        <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== 页面二：识别结果 ===== -->
+  <div class="page result-page" id="resultPage">
+    <div class="header">
+      <h1>Result</h1>
+      <a class="retake" onclick="showCamera()">重新拍照</a>
+    </div>
+
+    <div class="result-content">
+      <!-- 食物列表 -->
+      <div class="food-list">
+        <div class="food-item">
+          <span class="food-index">01</span>
+          <span class="food-name">红烧肉</span>
+          <span class="food-weight">280g</span>
+          <span class="food-cal">380 kcal</span>
+        </div>
+        <div class="food-item">
+          <span class="food-index">02</span>
+          <span class="food-name">米饭</span>
+          <span class="food-weight">150g</span>
+          <span class="food-cal">170 kcal</span>
+        </div>
+        <div class="food-item">
+          <span class="food-index">03</span>
+          <span class="food-name">青菜</span>
+          <span class="food-weight">100g</span>
+          <span class="food-cal">30 kcal</span>
+        </div>
+      </div>
+
+      <!-- 总计 -->
+      <div class="total-divider">
+        <span class="total-label">总计</span>
+        <span class="total-value">580<span>kcal</span></span>
+      </div>
+
+      <!-- AI 评语 -->
+      <p class="ai-comment">
+        这顿午饭蛋白质充足，但红烧肉的脂肪偏高。晚餐建议选择清蒸或水煮。
+      </p>
+    </div>
+
+    <div class="confirm-area">
+      <button class="btn-confirm" onclick="showCamera()">确认记录</button>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="tab-bar">
+    <a href="home.html" class="tab-item">
+      <div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M3 12L5 10M5 10L12 3L19 10M5 10V20C5 20.55 5.45 21 6 21H9M19 10L21 12M19 10V20C19 20.55 18.55 21 18 21H15M9 21C9 21 9 15 12 15C15 15 15 21 15 21M9 21H15" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="tab-label">首页</span>
+    </a>
+    <a href="camera.html" class="tab-item active">
+      <div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="13" r="4"/></svg></div>
+      <span class="tab-label">拍照</span>
+    </a>
+    <a href="meal-log.html" class="tab-item">
+      <div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+      <span class="tab-label">记录</span>
+    </a>
+    <a href="ai-chat.html" class="tab-item">
+      <div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="tab-label">AI</span>
+    </a>
+    <a href="profile.html" class="tab-item">
+      <div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <span class="tab-label">我的</span>
+    </a>
+  </div>
+
+  <script>
+    /* 页面切换逻辑 */
+    function showResult() {
+      document.getElementById('cameraPage').classList.remove('active');
+      document.getElementById('resultPage').classList.add('active');
+    }
+    function showCamera() {
+      document.getElementById('resultPage').classList.remove('active');
+      document.getElementById('cameraPage').classList.add('active');
+    }
+  </script>
+</body>
+</html>

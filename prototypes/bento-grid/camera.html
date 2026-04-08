@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=393, height=852, initial-scale=1.0, user-scalable=no">
+  <title>拍照识别 - 智能减脂助理</title>
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* 拍照识别页面特有样式 */
+
+    .camera-page {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background: #000;
+    }
+
+    .camera-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 20px;
+      flex-shrink: 0;
+    }
+
+    .camera-header .back-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 15px;
+      color: #fff;
+      border: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .camera-header .back-btn:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .camera-header .title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .camera-header .flash-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 15px;
+      color: #fff;
+      border: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* 相机取景框 */
+    .viewfinder {
+      position: relative;
+      flex: 1;
+      margin: 8px 16px;
+      border-radius: 24px;
+      overflow: hidden;
+      background: #111;
+    }
+
+    .viewfinder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* AI 识别框叠加层 */
+    .detection-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .detect-box {
+      position: absolute;
+      border: 2px solid rgba(34,197,94,0.7);
+      border-radius: 10px;
+      background: rgba(34,197,94,0.06);
+    }
+
+    .detect-box .detect-label {
+      position: absolute;
+      top: -10px;
+      left: 8px;
+      background: #22c55e;
+      color: #000;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    /* 扫描线动画 */
+    .scan-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #22c55e, transparent);
+      animation: scanDown 2.5s ease-in-out infinite;
+      opacity: 0.6;
+    }
+
+    @keyframes scanDown {
+      0% { top: 0; }
+      50% { top: 100%; }
+      100% { top: 0; }
+    }
+
+    /* 识别状态提示 */
+    .detect-status {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #22c55e;
+      white-space: nowrap;
+    }
+
+    .detect-status .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+      animation: pulse 1.5s infinite;
+    }
+
+    /* 识别结果面板 */
+    .result-panel {
+      flex-shrink: 0;
+      background: #09090B;
+      border-top: 1px solid #1a1a1a;
+      border-radius: 24px 24px 0 0;
+      padding: 20px 16px 16px;
+      max-height: 360px;
+    }
+
+    .result-panel .drag-handle {
+      width: 36px;
+      height: 4px;
+      border-radius: 2px;
+      background: #2a2a2a;
+      margin: 0 auto 16px auto;
+    }
+
+    .result-panel .result-title {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .result-panel .result-count {
+      font-size: 12px;
+      color: #22c55e;
+      font-weight: 500;
+    }
+
+    .food-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    .food-item:last-of-type {
+      border-bottom: none;
+    }
+
+    .food-item .food-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .food-item .food-info {
+      flex: 1;
+    }
+
+    .food-item .food-name {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .food-item .food-weight {
+      font-size: 12px;
+      color: #71717a;
+      margin-top: 1px;
+    }
+
+    .food-item .food-cal {
+      text-align: right;
+    }
+
+    .food-item .food-cal .num {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .food-item .food-cal .unit {
+      font-size: 11px;
+      color: #525252;
+    }
+
+    /* AI 评语气泡 */
+    .ai-comment {
+      margin: 12px 0;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, rgba(34,197,94,0.08), rgba(59,130,246,0.06));
+      border: 1px solid rgba(34,197,94,0.12);
+      border-radius: 16px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .ai-comment .ai-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .ai-comment .ai-text {
+      font-size: 13px;
+      line-height: 1.55;
+      color: #d4d4d8;
+    }
+
+    .ai-comment .ai-text strong {
+      color: #22c55e;
+      font-weight: 600;
+    }
+
+    /* 总计条 */
+    .total-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-top: 1px solid #1a1a1a;
+      margin-top: 4px;
+    }
+
+    .total-bar .total-label {
+      font-size: 14px;
+      color: #a1a1aa;
+    }
+
+    .total-bar .total-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #22c55e;
+    }
+
+    /* 底部操作按钮 */
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .action-buttons .btn-primary {
+      flex: 1;
+    }
+
+    .action-buttons .btn-secondary {
+      flex-shrink: 0;
+      width: 52px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    /* 快门按钮区域（隐藏，因为已有结果面板） */
+    .shutter-area {
+      display: none;
+    }
+
+    /* 底部安全区 */
+    .bottom-safe {
+      height: 24px;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="iphone-frame">
+    <!-- iOS 状态栏 -->
+    <div class="status-bar">
+      <span class="time">12:34</span>
+      <div class="dynamic-island"></div>
+      <div class="icons">
+        <i class="fas fa-signal" style="font-size:13px"></i>
+        <i class="fas fa-wifi" style="font-size:13px"></i>
+        <div class="battery">
+          <div class="battery-icon">
+            <div class="battery-fill"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camera-page">
+      <!-- 顶部导航 -->
+      <div class="camera-header">
+        <button class="back-btn"><i class="fas fa-chevron-left"></i></button>
+        <span class="title">拍照识别</span>
+        <button class="flash-btn"><i class="fas fa-bolt"></i></button>
+      </div>
+
+      <!-- 相机取景框 -->
+      <div class="viewfinder">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&h=500&fit=crop" alt="食物照片">
+        <div class="detection-overlay">
+          <!-- 检测框1：红烧肉 -->
+          <div class="detect-box" style="top:15%; left:10%; width:55%; height:40%">
+            <span class="detect-label">红烧肉 98%</span>
+          </div>
+          <!-- 检测框2：米饭 -->
+          <div class="detect-box" style="top:20%; left:62%; width:32%; height:35%">
+            <span class="detect-label">米饭 96%</span>
+          </div>
+          <!-- 检测框3：青菜 -->
+          <div class="detect-box" style="top:58%; left:15%; width:45%; height:32%">
+            <span class="detect-label">青菜 94%</span>
+          </div>
+        </div>
+        <div class="scan-line"></div>
+        <div class="detect-status">
+          <span class="dot"></span>
+          已识别 3 种食物
+        </div>
+      </div>
+
+      <!-- 识别结果面板 -->
+      <div class="result-panel">
+        <div class="drag-handle"></div>
+        <div class="result-title">
+          识别结果
+          <span class="result-count"><i class="fas fa-check-circle"></i> 置信度 96%</span>
+        </div>
+
+        <!-- 食物列表 -->
+        <div class="food-item">
+          <div class="food-icon" style="background:rgba(249,115,22,0.12)">
+            <i class="fas fa-drumstick-bite text-orange"></i>
+          </div>
+          <div class="food-info">
+            <div class="food-name">红烧肉</div>
+            <div class="food-weight">约 280g</div>
+          </div>
+          <div class="food-cal">
+            <div class="num">420</div>
+            <div class="unit">kcal</div>
+          </div>
+        </div>
+
+        <div class="food-item">
+          <div class="food-icon" style="background:rgba(251,191,36,0.12)">
+            <i class="fas fa-bowl-rice" style="color:#fbbf24"></i>
+          </div>
+          <div class="food-info">
+            <div class="food-name">米饭</div>
+            <div class="food-weight">约 150g</div>
+          </div>
+          <div class="food-cal">
+            <div class="num">174</div>
+            <div class="unit">kcal</div>
+          </div>
+        </div>
+
+        <div class="food-item">
+          <div class="food-icon" style="background:rgba(34,197,94,0.12)">
+            <i class="fas fa-leaf text-green"></i>
+          </div>
+          <div class="food-info">
+            <div class="food-name">青菜</div>
+            <div class="food-weight">约 100g</div>
+          </div>
+          <div class="food-cal">
+            <div class="num">86</div>
+            <div class="unit">kcal</div>
+          </div>
+        </div>
+
+        <!-- AI 评语 -->
+        <div class="ai-comment">
+          <div class="ai-avatar"><i class="fas fa-sparkles"></i></div>
+          <div class="ai-text">
+            这顿午饭约 <strong>680 大卡</strong>，蛋白质不错但脂肪偏高，建议晚餐清淡些。可以搭配一份水果补充维生素。
+          </div>
+        </div>
+
+        <!-- 总计 -->
+        <div class="total-bar">
+          <span class="total-label">总计热量</span>
+          <span class="total-value">680 kcal</span>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="action-buttons">
+          <button class="btn-secondary" title="重新拍照">
+            <i class="fas fa-redo"></i>
+          </button>
+          <button class="btn-primary">确认记录</button>
+        </div>
+      </div>
+
+      <div class="bottom-safe"></div>
+    </div>
+  </div>
+</body>
+</html>

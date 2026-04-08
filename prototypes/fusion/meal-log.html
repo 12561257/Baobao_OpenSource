@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=393, height=852, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>饮食记录 - 混合风格智能减脂助理</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #fafafa;
+      --card: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6b6b6b;
+      --text-tertiary: #999999;
+      --border: #e5e5e5;
+      --accent: #2d5a3d;
+      --black: #000000;
+      --white: #ffffff;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text-primary);
+      width: 393px;
+      height: 852px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      line-height: 1.6;
+      position: relative;
+    }
+    body::-webkit-scrollbar { width: 0; }
+
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px 8px;
+      font-size: 14px;
+      font-weight: 600;
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .status-bar .time { font-weight: 700; }
+    .status-bar .icons { display: flex; gap: 6px; }
+    .status-bar .icons i { font-size: 12px; }
+
+    .content {
+      padding: 0 20px 100px;
+    }
+
+    /* 页面标题 */
+    .page-title {
+      font-family: var(--font-serif);
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 16px 0 20px;
+    }
+
+    /* 日期选择器 */
+    .date-picker {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      padding: 12px 0 24px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    .date-arrow {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+    .date-arrow:hover {
+      background: var(--black);
+      color: var(--white);
+      border-color: var(--black);
+    }
+    .date-arrow:active { transform: scale(0.9); }
+    .date-display {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    /* 餐次区块 */
+    .meal-section {
+      margin-bottom: 28px;
+    }
+    .meal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 14px;
+    }
+    .meal-label {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+    }
+    .meal-time {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      color: var(--text-tertiary);
+      letter-spacing: 0.04em;
+    }
+
+    /* 食物项 */
+    .food-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .food-row:last-child { border-bottom: none; }
+    .food-row-name {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+    .food-row-detail {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      color: var(--text-tertiary);
+      flex: 1;
+      text-align: center;
+    }
+    .food-row-kcal {
+      font-family: var(--font-serif);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-align: right;
+      min-width: 70px;
+    }
+
+    /* 小计 */
+    .meal-subtotal {
+      text-align: right;
+      padding-top: 8px;
+      font-family: var(--font-serif);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      border-top: 1px solid var(--border);
+      margin-top: 4px;
+    }
+
+    /* 虚线框 - 未记录 */
+    .empty-meal {
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: center;
+      margin-top: 4px;
+    }
+    .empty-meal-text {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      color: var(--text-tertiary);
+      margin-bottom: 10px;
+    }
+    .add-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 20px;
+      border: 1px solid var(--black);
+      border-radius: var(--radius-sm);
+      background: transparent;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--text-primary);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .add-btn:hover {
+      background: var(--black);
+      color: var(--white);
+    }
+    .add-btn:active { transform: scale(0.96); }
+
+    /* 底部汇总 */
+    .daily-summary {
+      border-top: 2px solid var(--text-primary);
+      padding-top: 20px;
+      margin-top: 8px;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 6px 0;
+    }
+    .summary-label {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      color: var(--text-tertiary);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .summary-value {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .summary-row.total .summary-value {
+      font-size: 22px;
+    }
+    .summary-row.remaining .summary-value {
+      color: var(--accent);
+    }
+
+    /* Tab Bar */
+    .tab-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 393px;
+      height: 80px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      padding-top: 8px;
+      z-index: 200;
+    }
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 4px 12px;
+      text-decoration: none;
+    }
+    .tab-item i { font-size: 20px; color: var(--text-tertiary); }
+    .tab-item span { font-size: 10px; color: var(--text-tertiary); }
+    .tab-item.active i { color: var(--black); }
+    .tab-item.active span { color: var(--black); font-weight: 600; }
+    .tab-item:hover i { color: var(--text-secondary); }
+    .tab-item:active { transform: scale(0.92); }
+  </style>
+</head>
+<body>
+  <!-- iOS 状态栏 -->
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <div class="icons">
+      <i class="fas fa-signal"></i>
+      <i class="fas fa-wifi"></i>
+      <i class="fas fa-battery-full"></i>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- 页面标题 -->
+    <div class="page-title">TODAY'S LOG</div>
+
+    <!-- 日期选择器 -->
+    <div class="date-picker">
+      <div class="date-arrow"><i class="fas fa-chevron-left"></i></div>
+      <div class="date-display">2026 年 4 月 2 日 · 周四</div>
+      <div class="date-arrow"><i class="fas fa-chevron-right"></i></div>
+    </div>
+
+    <!-- 早餐 -->
+    <div class="meal-section">
+      <div class="meal-header">
+        <span class="meal-label">Breakfast</span>
+        <span class="meal-time">07:30</span>
+      </div>
+      <div class="food-row">
+        <span class="food-row-name">全麦面包 x2</span>
+        <span class="food-row-detail">········</span>
+        <span class="food-row-kcal">180 kcal</span>
+      </div>
+      <div class="food-row">
+        <span class="food-row-name">煮鸡蛋 x1</span>
+        <span class="food-row-detail">·······</span>
+        <span class="food-row-kcal">78 kcal</span>
+      </div>
+      <div class="food-row">
+        <span class="food-row-name">脱脂牛奶 250ml</span>
+        <span class="food-row-detail">······</span>
+        <span class="food-row-kcal">90 kcal</span>
+      </div>
+      <div class="meal-subtotal">348 kcal</div>
+    </div>
+
+    <!-- 午餐 -->
+    <div class="meal-section">
+      <div class="meal-header">
+        <span class="meal-label">Lunch</span>
+        <span class="meal-time">12:15</span>
+      </div>
+      <div class="food-row">
+        <span class="food-row-name">红烧肉 280g</span>
+        <span class="food-row-detail">·········</span>
+        <span class="food-row-kcal">380 kcal</span>
+      </div>
+      <div class="food-row">
+        <span class="food-row-name">米饭 150g</span>
+        <span class="food-row-detail">········</span>
+        <span class="food-row-kcal">170 kcal</span>
+      </div>
+      <div class="food-row">
+        <span class="food-row-name">青菜 100g</span>
+        <span class="food-row-detail">····</span>
+        <span class="food-row-kcal">30 kcal</span>
+      </div>
+      <div class="meal-subtotal">580 kcal</div>
+    </div>
+
+    <!-- 晚餐 - 未记录 -->
+    <div class="meal-section">
+      <div class="meal-header">
+        <span class="meal-label">Dinner</span>
+      </div>
+      <div class="empty-meal">
+        <div class="empty-meal-text">尚未记录</div>
+        <button class="add-btn">
+          <i class="fas fa-plus" style="font-size:10px;"></i>
+          添加晚餐
+        </button>
+      </div>
+    </div>
+
+    <!-- 零食 -->
+    <div class="meal-section">
+      <div class="meal-header">
+        <span class="meal-label">Snack</span>
+      </div>
+      <div class="food-row">
+        <span class="food-row-name">苹果 1个</span>
+        <span class="food-row-detail">······</span>
+        <span class="food-row-kcal">52 kcal</span>
+      </div>
+      <div class="meal-subtotal">52 kcal</div>
+    </div>
+
+    <!-- 底部汇总 -->
+    <div class="daily-summary">
+      <div class="summary-row total">
+        <span class="summary-label">已摄入</span>
+        <span class="summary-value">1,260 kcal</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">每日预算</span>
+        <span class="summary-value">1,850 kcal</span>
+      </div>
+      <div class="summary-row remaining">
+        <span class="summary-label">剩余</span>
+        <span class="summary-value">590 kcal</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <a class="tab-item" href="home.html">
+      <i class="fas fa-house"></i>
+      <span>首页</span>
+    </a>
+    <a class="tab-item" href="camera.html">
+      <i class="fas fa-camera"></i>
+      <span>拍照</span>
+    </a>
+    <a class="tab-item active" href="meal-log.html">
+      <i class="fas fa-utensils"></i>
+      <span>记录</span>
+    </a>
+    <a class="tab-item" href="progress.html">
+      <i class="fas fa-chart-line"></i>
+      <span>进度</span>
+    </a>
+    <a class="tab-item" href="profile.html">
+      <i class="fas fa-user"></i>
+      <span>我的</span>
+    </a>
+  </div>
+</body>
+</html>

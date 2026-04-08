@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Baobao</string>
+
+    <!-- ========== Common ========== -->
+    <string name="common_cancel">Cancel</string>
+    <string name="common_confirm">Confirm</string>
+    <string name="common_save">Save</string>
+    <string name="common_delete">Delete</string>
+    <string name="common_edit">Edit</string>
+    <string name="common_add">Add</string>
+    <string name="common_back">Back</string>
+    <string name="common_loading">Loading…</string>
+    <string name="common_kg">kg</string>
+    <string name="common_cm">cm</string>
+    <string name="common_kcal">kcal</string>
+    <string name="common_error_prefix">Error: %s</string>
+    <string name="common_submit">Submit</string>
+    <string name="common_record">Record</string>
+
+    <!-- ========== Bottom Navigation ========== -->
+    <string name="nav_home">Home</string>
+    <string name="nav_meal_log">Log</string>
+    <string name="nav_progress">Progress</string>
+    <string name="nav_ai_chat">AI Assistant</string>
+    <string name="nav_profile">Me</string>
+
+    <!-- ========== Meal Types ========== -->
+    <string name="meal_type_breakfast">Breakfast</string>
+    <string name="meal_type_lunch">Lunch</string>
+    <string name="meal_type_dinner">Dinner</string>
+    <string name="meal_type_snack">Snack</string>
+
+    <!-- ========== Home ========== -->
+    <string name="home_greeting">Hi, %s</string>
+    <string name="home_today_calories">Today\'s Calories</string>
+    <string name="home_calories_available">kcal available</string>
+    <string name="home_carbs">Carbs</string>
+    <string name="home_protein">Protein</string>
+    <string name="home_fat">Fat</string>
+    <string name="home_water">Water</string>
+    <string name="home_water_remove">Remove</string>
+    <string name="home_water_add">Add</string>
+    <string name="home_weekly_overview">Weekly Overview</string>
+    <string name="home_weekly_summary">Weekly average %1$s kcal, on-target rate %2$d%%. Right on track, keep it up!</string>
+    <string name="home_ask_ai">Ask AI</string>
+    <string name="home_no_record_insight">No records yet today. Start logging your first meal!</string>
+
+    <!-- ========== AI Chat ========== -->
+    <string name="chat_ai_label">AI</string>
+    <string name="chat_upload_image">Upload Image</string>
+    <string name="chat_input_hint">Type something…</string>
+    <string name="chat_send">Send</string>
+    <string name="chat_ai_comment">AI Comment</string>
+    <string name="chat_sent_image">Image sent</string>
+    <string name="chat_food_recorded">✅ Logged %1$s: %2$s (%3$d kcal total)</string>
+    <string name="chat_exercise_recorded">🏃 Logged exercise: %1$s (%2$d kcal burned)</string>
+    <string name="chat_food_deleted">🗑️ Deleted: %1$s (-%2$d kcal)</string>
+
+    <!-- ========== Progress ========== -->
+    <string name="progress_title">Progress</string>
+    <string name="progress_weight_lost">Lost %s kg</string>
+    <string name="progress_record_weight">Record Weight</string>
+    <string name="progress_no_weight_data">No weight records yet</string>
+    <string name="progress_to_goal">To Goal</string>
+    <string name="progress_bmi">BMI</string>
+    <string name="progress_avg_daily_intake">Avg Daily Intake</string>
+    <string name="progress_weekly_report">Weekly Report</string>
+    <string name="progress_on_track_days">On-Target Days</string>
+    <string name="progress_avg_intake">Avg Intake</string>
+    <string name="progress_exercise_burned">Exercise Burned</string>
+    <string name="progress_weekly_weight_change">Weekly Change</string>
+    <string name="progress_assessment">Progress Assessment</string>
+    <string name="progress_assessment_normal">On Track ✓</string>
+    <string name="progress_ai_advice">AI Advice</string>
+    <string name="progress_ai_advice_content">Keep up the good logging habit. Track your health data consistently, and make every day count toward your goal.</string>
+    <string name="progress_record_today_weight">Record Today\'s Weight</string>
+    <string name="progress_weight_label">Weight (kg)</string>
+
+    <!-- ========== Camera / Photo Recognition ========== -->
+    <string name="camera_need_permission">Camera permission is required to take photos</string>
+    <string name="camera_or_text">Or describe in text</string>
+    <string name="camera_take_photo">Take Photo</string>
+    <string name="camera_pick_from_gallery">Choose from Gallery</string>
+    <string name="camera_food_photo">Food Photo</string>
+    <string name="camera_input_food_desc">Describe your food</string>
+    <string name="camera_input_placeholder">e.g. grilled chicken 280g, rice 150g, salad 100g</string>
+    <string name="camera_analyzing">Analyzing…</string>
+    <string name="camera_ai_analyze">AI Analysis</string>
+    <string name="camera_total">Total</string>
+    <string name="camera_macro_summary">Carbs %1$dg · Protein %2$dg · Fat %3$dg</string>
+    <string name="camera_confirm_record">Confirm &amp; Record</string>
+
+    <!-- ========== API Setup ========== -->
+    <string name="setup_app_name">Baobao</string>
+    <string name="setup_subtitle">Start your smart fitness journey</string>
+    <string name="setup_api_config">API Configuration</string>
+    <string name="setup_api_key_placeholder">Enter your Volcano Ark API Key</string>
+    <string name="setup_model_label">Model ID or Endpoint ID</string>
+    <string name="setup_model_placeholder">e.g. doubao-2-5-pro or ep-xxxxx</string>
+    <string name="setup_base_url_label">API Base URL</string>
+    <string name="setup_base_url_placeholder">e.g. https://ark.cn-beijing.volces.com/api/v3</string>
+    <string name="setup_testing">Testing…</string>
+    <string name="setup_test_connection">Test Connection</string>
+    <string name="setup_hide_help">Hide Help</string>
+    <string name="setup_how_to_get">How to get it?</string>
+    <string name="setup_save_and_start">Save &amp; Start</string>
+    <string name="setup_quick_steps_title">Quick Setup Steps</string>
+    <string name="setup_quick_steps_content">1. Visit Volcano Ark Console (console.volcengine.com/ark)\n2. Sign up or log in → Create an API Key\n3. Create an endpoint under \"Inference\" (select Doubao model)\n4. Copy the endpoint ID (ep-xxx) or use a preset model ID</string>
+    <string name="setup_tutorial_title">Step-by-Step Tutorial</string>
+    <string name="setup_feishu_tutorial">Feishu Doc Tutorial</string>
+    <string name="setup_view">View</string>
+    <string name="setup_copy_link">Copy Link</string>
+    <string name="setup_preset_custom">Custom</string>
+
+    <!-- ========== Onboarding ========== -->
+    <string name="onboarding_hello">Hello 👋</string>
+    <string name="onboarding_intro">Let me get to know you first,\nso I can create the best diet plan for you.</string>
+    <string name="onboarding_name_label">Name (optional)</string>
+    <string name="onboarding_name_placeholder">What should I call you?</string>
+    <string name="onboarding_gender">Gender</string>
+    <string name="onboarding_gender_male">👨 Male</string>
+    <string name="onboarding_gender_female">👩 Female</string>
+    <string name="onboarding_age">Age</string>
+    <string name="onboarding_age_placeholder">years</string>
+    <string name="onboarding_height">Height</string>
+    <string name="onboarding_current_weight">Current Weight</string>
+    <string name="onboarding_target_weight">Target Weight</string>
+    <string name="onboarding_start">Start My Fitness Journey →</string>
+    <string name="onboarding_default_name">User</string>
+    <string name="onboarding_validation_height">Please enter a height between 100–250 cm</string>
+    <string name="onboarding_validation_weight">Please enter a weight between 30–300 kg</string>
+    <string name="onboarding_validation_target">Please enter a target weight between 30–300 kg</string>
+    <string name="onboarding_validation_age">Please enter an age between 10–120</string>
+
+    <!-- ========== Error Messages ========== -->
+    <string name="error_api_key_required">Please configure your API Key in Settings first</string>
+    <string name="error_base_url_required">Please configure your API Base URL in Settings first</string>
+    <string name="error_api_key_empty">Please enter your API Key</string>
+    <string name="error_model_required">Please select a model or enter an endpoint ID</string>
+    <string name="error_base_url_required_setup">Please enter your API Base URL</string>
+    <string name="error_save_failed">Save failed: %s</string>
+    <string name="error_model_empty">Please select a model or enter an endpoint ID</string>
+    <string name="error_save_format">Save failed: %s</string>
+    <string name="error_network">Network error: %s</string>
+    <string name="error_parse_failed">Parse failed: %s</string>
+    <string name="error_ai_service">Sorry, the AI service encountered an issue: %s</string>
+    <string name="error_ai_unable">Sorry, AI is unable to process your request: %s</string>
+    <string name="error_analysis_failed">Analysis Failed</string>
+    <string name="error_analysis_error">Analysis Error</string>
+    <string name="error_test_reply_ok">Please reply: OK</string>
+    <string name="error_test_success">Connected! Model response: %s</string>
+    <string name="error_test_http">HTTP %1$s: %2$s</string>
+
+    <!-- ========== Date Format ========== -->
+    <string name="date_format_pattern">EEE, MMM d, yyyy</string>
+
+    <!-- ========== Meal Log ========== -->
+    <string name="meallog_today_records">Today\'s Records</string>
+    <string name="meallog_previous_day">Previous Day</string>
+    <string name="meallog_next_day">Next Day</string>
+    <string name="meallog_photo_recognize">Take Photo</string>
+    <string name="meallog_from_gallery">Choose from Gallery</string>
+    <string name="meallog_remaining_budget">Remaining Budget</string>
+    <string name="meallog_in_progress">In Progress</string>
+    <string name="meallog_over_budget">Over Budget</string>
+    <string name="meallog_consumed">Consumed</string>
+    <string name="meallog_total_budget">Total Budget</string>
+    <string name="meallog_record_meal">Log %s</string>
+    <string name="meallog_cancel_record">Cancel</string>
+    <string name="meallog_analyzing">Analyzing…</string>
+    <string name="meallog_ai_convert">Auto-converted by AI →</string>
+    <string name="meallog_take_photo_now">Take Photo</string>
+    <string name="meallog_local_gallery">Gallery</string>
+    <string name="meallog_ai_recognizing">AI is working on it…</string>
+    <string name="meallog_total">Total</string>
+    <string name="meallog_save_to">Save to %s</string>
+    <string name="meallog_what_did_you_eat">What did you just eat?</string>
+    <string name="meallog_food_example">e.g. grilled chicken 280g, rice 1 bowl</string>
+    <string name="meallog_food_photo">Food Photo</string>
+
+    <!-- ========== Memory Management ========== -->
+    <string name="memory_tab_core">Core Memory</string>
+    <string name="memory_tab_daily">Daily Notes</string>
+    <string name="memory_tab_cleanup">Data Cleanup</string>
+    <string name="memory_title">Memory Management</string>
+    <string name="memory_add">Add Memory</string>
+    <string name="memory_edit">Edit Memory</string>
+    <string name="memory_no_core">No core memories yet</string>
+    <string name="memory_ai_auto_record">AI will automatically record your preferences and habits during conversations</string>
+    <string name="memory_no_daily">No daily notes yet</string>
+    <string name="memory_notes_auto_gen">Notes are automatically generated at the end of each day</string>
+    <string name="memory_unknown_date">Unknown Date</string>
+    <string name="memory_calories_prefix">Calories: </string>
+    <string name="memory_ai_comment_prefix">AI Comment: </string>
+    <string name="memory_bulk_cleanup">Bulk Data Cleanup</string>
+    <string name="memory_cleanup_warning">Deleted data cannot be recovered. Please proceed with caution.</string>
+    <string name="memory_clear_core_all">Clear All Core Memories</string>
+    <string name="memory_clear_core_desc">Delete all memory entries added by AI and manually</string>
+    <string name="memory_clear_daily_all">Clear All Daily Notes</string>
+    <string name="memory_clear_daily_desc">Delete all auto-generated daily diet summaries</string>
+    <string name="memory_clear_chat_all">Clear Chat History</string>
+    <string name="memory_clear_chat_desc">Delete all conversation history with the AI assistant</string>
+    <string name="memory_category">Category</string>
+    <string name="memory_cat_preference">Preference</string>
+    <string name="memory_cat_observation">Observation</string>
+    <string name="memory_cat_habit">Habit</string>
+    <string name="memory_cat_goal">Goal</string>
+    <string name="memory_cat_custom">Custom</string>
+    <string name="memory_source_ai">AI</string>
+    <string name="memory_source_user">User</string>
+    <string name="memory_from_source">From %s</string>
+    <string name="memory_content_label">Memory Content</string>
+    <string name="memory_content_hint">e.g. I don\'t eat cilantro</string>
+    <string name="memory_confirm_clear">Confirm Clear</string>
+    <string name="memory_confirm_clear_msg">Are you sure you want to clear %1$s? This action cannot be undone.</string>
+    <string name="memory_all_core_memories">all core memories</string>
+    <string name="memory_all_daily_notes">all daily notes</string>
+    <string name="memory_all_chat_history">all chat history</string>
+    <string name="memory_save">Save</string>
+
+    <!-- ========== Profile ========== -->
+    <string name="profile_title">Me</string>
+    <string name="profile_update_health">Update Health Profile</string>
+    <string name="profile_nickname">Nickname</string>
+    <string name="profile_your_name">Your name</string>
+    <string name="profile_gender">Gender</string>
+    <string name="profile_male">👨 Male</string>
+    <string name="profile_female">👩 Female</string>
+    <string name="profile_age">Age</string>
+    <string name="profile_age_placeholder">years</string>
+    <string name="profile_height">Height</string>
+    <string name="profile_current_weight">Current Weight</string>
+    <string name="profile_target_weight">Target Weight</string>
+    <string name="profile_save_update">Save Updates</string>
+    <string name="profile_skip_edit">Skip</string>
+    <string name="profile_goal_weight">Goal: %1$skg</string>
+    <string name="profile_body_data">Body Data</string>
+    <string name="profile_gender_label">Gender</string>
+    <string name="profile_current_weight_label">Current Weight</string>
+    <string name="profile_target_weight_label">Target Weight</string>
+    <string name="profile_bmi_label">BMI</string>
+    <string name="profile_activity_label">Activity Level</string>
+    <string name="profile_daily_budget_label">Daily Budget</string>
+    <string name="profile_sedentary">Sedentary</string>
+    <string name="profile_light_activity">Light</string>
+    <string name="profile_moderate_activity">Moderate</string>
+    <string name="profile_heavy_activity">Heavy</string>
+    <string name="profile_achievements">Achievements</string>
+    <string name="profile_streak_days">%d days</string>
+    <string name="profile_consecutive_record">Streak</string>
+    <string name="profile_total_weight_lost">Total Lost</string>
+    <string name="profile_reshape_persona">Reset Assistant Personality</string>
+    <string name="profile_recommend_templates">Recommended Templates</string>
+    <string name="profile_advanced_custom">Advanced Custom (Prompt)</string>
+    <string name="profile_assistant_hint">Describe the coach\'s personality traits…</string>
+    <string name="profile_confirm_modify">Confirm</string>
+    <string name="profile_ai_assistant_setting">AI Assistant Settings</string>
+    <string name="profile_custom_setting">Custom Settings</string>
+    <string name="profile_settings">Settings</string>
+    <string name="profile_goal_setting">Goal Settings</string>
+    <string name="profile_api_config">API Configuration</string>
+    <string name="profile_dietary_prefs">Dietary Preferences</string>
+    <string name="profile_notification">Notifications</string>
+    <string name="profile_data_export">Data Export</string>
+    <string name="profile_memory_manage">Memory Management</string>
+    <string name="profile_about">About</string>
+    <string name="profile_app_version">Baobao v1.0.0</string>
+    <string name="profile_reset_title">Reset All Data?</string>
+    <string name="profile_reset_desc">This will clear your health profile (height, weight, etc.) and take you back to the onboarding flow. Chat history and meal records will be kept, but will no longer be linked to your personal preferences.</string>
+    <string name="profile_reset_confirm">Reset</string>
+    <string name="profile_reset_all">Reset All Profile Data</string>
+    <string name="profile_feature_wip">%s is coming soon</string>
+
+    <!-- ========== Persona Presets ========== -->
+    <string name="persona_warm">Gentle</string>
+    <string name="persona_sarcastic">Harsh</string>
+    <string name="persona_professional">Professional</string>
+    <string name="persona_custom">Custom</string>
+
+    <!-- ========== MainActivity Crash Dialog ========== -->
+    <string name="main_crash_title">A crash occurred last time</string>
+    <string name="main_copy_clipboard">Copied to clipboard</string>
+    <string name="main_copy_log">Copy Log</string>
+    <string name="main_close">Close</string>
+
+    <!-- ========== Language Switching ========== -->
+    <string name="settings_language">Language</string>
+    <string name="settings_language_system">System Default</string>
+    <string name="settings_language_zh">中文 (Chinese)</string>
+    <string name="settings_language_en">English</string>
+</resources>
+

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typography-First 原型 - 智能减脂助理</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== 设计令牌 ===== */
+    :root {
+      --black: #000000;
+      --white: #ffffff;
+      --gray-666: #666666;
+      --gray-999: #999999;
+      --gray-eee: #eeeeee;
+      --gray-f5: #f5f5f5;
+      --font-serif: 'Playfair Display', 'Georgia', serif;
+      --font-sans: 'Inter', 'system-ui', sans-serif;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--gray-f5);
+      color: var(--black);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== 页面头部 ===== */
+    .page-header {
+      padding: 48px 48px 0;
+    }
+    .page-header h1 {
+      font-family: var(--font-serif);
+      font-size: 48px;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--black);
+    }
+    .page-header .subtitle {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--gray-999);
+      letter-spacing: 0.06em;
+      margin-top: 12px;
+      line-height: 1.6;
+    }
+    .page-header .divider {
+      margin-top: 32px;
+      border-top: 2px solid var(--black);
+    }
+
+    /* ===== 界面展示网格 ===== */
+    .screens-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 48px;
+      padding: 48px;
+    }
+
+    /* 每个界面的容器 */
+    .screen-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .screen-label {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gray-999);
+    }
+    .screen-label span {
+      font-weight: 400;
+      color: var(--gray-666);
+      letter-spacing: 0.02em;
+      text-transform: none;
+      margin-left: 8px;
+      font-size: 12px;
+    }
+
+    /* iframe 容器 - 模拟 iPhone 15 Pro */
+    .phone-frame {
+      width: 393px;
+      height: 852px;
+      border-radius: 40px;
+      overflow: hidden;
+      border: 0.5px solid var(--gray-eee);
+      background: var(--white);
+      box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.04),
+        0 20px 40px rgba(0, 0, 0, 0.06);
+      position: relative;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .phone-frame:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.06),
+        0 32px 64px rgba(0, 0, 0, 0.1);
+    }
+    .phone-frame iframe {
+      width: 393px;
+      height: 852px;
+      border: none;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 页面头部 -->
+  <header class="page-header">
+    <h1>Typography-First</h1>
+    <p class="subtitle">
+      智能减脂助理 / iPhone 15 Pro (393 x 852) / Playfair Display + Inter
+    </p>
+    <div class="divider"></div>
+  </header>
+
+  <!-- 界面展示网格 -->
+  <div class="screens-grid">
+
+    <!-- 首页仪表盘 -->
+    <div class="screen-wrapper">
+      <div class="screen-label">Home <span>首页仪表盘</span></div>
+      <div class="phone-frame">
+        <iframe src="home.html" title="首页"></iframe>
+      </div>
+    </div>
+
+    <!-- 拍照识别 -->
+    <div class="screen-wrapper">
+      <div class="screen-label">Camera <span>拍照识别</span></div>
+      <div class="phone-frame">
+        <iframe src="camera.html" title="拍照识别"></iframe>
+      </div>
+    </div>
+
+    <!-- 饮食记录 -->
+    <div class="screen-wrapper">
+      <div class="screen-label">Meal Log <span>饮食记录</span></div>
+      <div class="phone-frame">
+        <iframe src="meal-log.html" title="饮食记录"></iframe>
+      </div>
+    </div>
+
+    <!-- 进度追踪 -->
+    <div class="screen-wrapper">
+      <div class="screen-label">Progress <span>进度追踪</span></div>
+      <div class="phone-frame">
+        <iframe src="progress.html" title="进度追踪"></iframe>
+      </div>
+    </div>
+
+    <!-- AI 助理 -->
+    <div class="screen-wrapper">
+      <div class="screen-label">AI Chat <span>AI 助理</span></div>
+      <div class="phone-frame">
+        <iframe src="ai-chat.html" title="AI 助理"></iframe>
+      </div>
+    </div>
+
+    <!-- 个人中心 -->
+    <div class="screen-wrapper">
+      <div class="screen-label">Profile <span>个人中心</span></div>
+      <div class="phone-frame">
+        <iframe src="profile.html" title="个人中心"></iframe>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

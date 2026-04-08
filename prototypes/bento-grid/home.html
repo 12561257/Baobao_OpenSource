@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=393, height=852, initial-scale=1.0, user-scalable=no">
+  <title>首页 - 智能减脂助理</title>
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* 首页特有样式 */
+
+    /* 问候区域 */
+    .greeting-section {
+      padding: 4px 0 16px 0;
+    }
+
+    .greeting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .greeting-text h2 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .greeting-text .date {
+      font-size: 13px;
+      color: #71717a;
+      margin-top: 2px;
+    }
+
+    .greeting-text .ai-hint {
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: rgba(34,197,94,0.08);
+      border: 1px solid rgba(34,197,94,0.15);
+      border-radius: 12px;
+      font-size: 12px;
+      color: #22c55e;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .greeting-text .ai-hint i {
+      font-size: 14px;
+    }
+
+    .avatar-sm {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #22c55e;
+    }
+
+    /* 热量环形进度卡片 */
+    .calorie-ring-card {
+      grid-column: span 2;
+      min-height: 220px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 22px;
+    }
+
+    .calorie-ring-card .ring-container {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      flex-shrink: 0;
+    }
+
+    .calorie-ring-card .ring-container svg {
+      transform: rotate(-90deg);
+    }
+
+    .calorie-ring-card .ring-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .calorie-ring-card .ring-center .number {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1;
+      background: linear-gradient(135deg, #22c55e, #4ade80);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .calorie-ring-card .ring-center .unit {
+      font-size: 12px;
+      color: #71717a;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .calorie-ring-card .ring-center .label {
+      font-size: 11px;
+      color: #525252;
+      margin-top: 1px;
+    }
+
+    .calorie-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .calorie-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .calorie-row .label {
+      font-size: 13px;
+      color: #a1a1aa;
+    }
+
+    .calorie-row .value {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    /* 营养素卡片 */
+    .macros-card {
+      grid-column: span 2;
+      padding: 20px;
+    }
+
+    .macros-card .title {
+      font-size: 13px;
+      color: #71717a;
+      font-weight: 500;
+      margin-bottom: 14px;
+    }
+
+    .macro-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .macro-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .macro-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .macro-info {
+      flex: 1;
+    }
+
+    .macro-info .macro-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+
+    .macro-info .macro-name {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .macro-info .macro-value {
+      font-size: 12px;
+      color: #a1a1aa;
+    }
+
+    .macro-info .progress-bar {
+      height: 5px;
+    }
+
+    /* 步数小卡片 */
+    .step-card {
+      text-align: center;
+      padding: 18px 14px;
+    }
+
+    .step-card .icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px auto;
+      font-size: 20px;
+    }
+
+    .step-card .big-number {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+    }
+
+    .step-card .sub-text {
+      font-size: 12px;
+      color: #71717a;
+      margin-top: 4px;
+    }
+
+    /* 饮水小卡片 */
+    .water-card {
+      text-align: center;
+      padding: 18px 14px;
+    }
+
+    .water-card .icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px auto;
+      font-size: 20px;
+    }
+
+    .water-card .big-number {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+    }
+
+    .water-card .sub-text {
+      font-size: 12px;
+      color: #71717a;
+      margin-top: 4px;
+    }
+
+    /* 横幅卡片 */
+    .banner-card {
+      grid-column: span 2;
+      padding: 18px 20px;
+      background: linear-gradient(135deg, rgba(34,197,94,0.1) 0%, rgba(59,130,246,0.08) 100%);
+      border-color: rgba(34,197,94,0.15);
+    }
+
+    .banner-card .banner-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .banner-card .banner-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(34,197,94,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .banner-card .banner-text {
+      flex: 1;
+    }
+
+    .banner-card .banner-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .banner-card .banner-desc {
+      font-size: 12px;
+      color: #a1a1aa;
+      margin-top: 2px;
+    }
+
+    /* 快捷操作区 */
+    .quick-actions {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    .quick-action-item {
+      background: #09090B;
+      border: 1px solid #1a1a1a;
+      border-radius: 18px;
+      padding: 16px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .quick-action-item:hover {
+      border-color: #2a2a2a;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .quick-action-item:active {
+      transform: scale(0.97);
+    }
+
+    .quick-action-item .qa-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 8px auto;
+      font-size: 17px;
+    }
+
+    .quick-action-item .qa-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #a1a1aa;
+    }
+
+    /* 今日餐食预览 */
+    .meal-preview-card {
+      grid-column: span 2;
+      padding: 18px;
+    }
+
+    .meal-preview-card .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .meal-preview-card .card-title .see-all {
+      font-size: 12px;
+      color: #22c55e;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .meal-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    .meal-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .meal-item:first-child {
+      padding-top: 0;
+    }
+
+    .meal-item img {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .meal-item .meal-info {
+      flex: 1;
+    }
+
+    .meal-item .meal-name {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .meal-item .meal-time {
+      font-size: 11px;
+      color: #525252;
+      margin-top: 1px;
+    }
+
+    .meal-item .meal-cal {
+      font-size: 14px;
+      font-weight: 600;
+      color: #a1a1aa;
+    }
+  </style>
+</head>
+<body>
+  <div class="iphone-frame">
+    <!-- iOS 状态栏 -->
+    <div class="status-bar">
+      <span class="time">14:32</span>
+      <div class="dynamic-island"></div>
+      <div class="icons">
+        <i class="fas fa-signal" style="font-size:13px"></i>
+        <i class="fas fa-wifi" style="font-size:13px"></i>
+        <div class="battery">
+          <div class="battery-icon">
+            <div class="battery-fill"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 页面内容 -->
+    <div class="page-content">
+      <!-- 问候区域 -->
+      <div class="greeting-section">
+        <div class="greeting-row">
+          <div class="greeting-text">
+            <h2>下午好，杨弘</h2>
+            <div class="date">2026年4月2日 周四</div>
+            <div class="ai-hint">
+              <i class="fas fa-sparkles"></i>
+              午餐后散步 20 分钟，有助于平稳血糖
+            </div>
+          </div>
+          <img class="avatar-sm" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" alt="头像">
+        </div>
+      </div>
+
+      <!-- Bento Grid 布局 -->
+      <div class="bento-grid bento-grid-2">
+
+        <!-- 大卡片：热量环形进度 -->
+        <div class="bento-card calorie-ring-card">
+          <div class="ring-container">
+            <svg width="140" height="140" viewBox="0 0 140 140">
+              <!-- 背景环 -->
+              <circle cx="70" cy="70" r="58" fill="none" stroke="#1a1a1a" stroke-width="10"/>
+              <!-- 进度环 -->
+              <circle cx="70" cy="70" r="58" fill="none" stroke="url(#ringGradient)" stroke-width="10"
+                      stroke-linecap="round" stroke-dasharray="364.42" stroke-dashoffset="124"/>
+              <defs>
+                <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#22c55e"/>
+                  <stop offset="100%" stop-color="#4ade80"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="ring-center">
+              <div class="number">650</div>
+              <div class="unit">大卡</div>
+              <div class="label">剩余</div>
+            </div>
+          </div>
+          <div class="calorie-details">
+            <div class="calorie-row">
+              <span class="label">已摄入</span>
+              <span class="value text-green">1,200</span>
+            </div>
+            <div class="calorie-row">
+              <span class="label">预算</span>
+              <span class="value">1,850</span>
+            </div>
+            <div class="calorie-row">
+              <span class="label">运动消耗</span>
+              <span class="value text-blue">+210</span>
+            </div>
+            <div class="divider"></div>
+            <div class="calorie-row">
+              <span class="label" style="font-weight:500">剩余可用</span>
+              <span class="value text-green" style="font-size:18px;font-weight:700">860</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 三大营养素进度条 -->
+        <div class="bento-card macros-card">
+          <div class="title">三大营养素</div>
+          <div class="macro-item">
+            <div class="macro-dot" style="background:#22c55e"></div>
+            <div class="macro-info">
+              <div class="macro-header">
+                <span class="macro-name">碳水化合物</span>
+                <span class="macro-value">128 / 230g</span>
+              </div>
+              <div class="progress-bar">
+                <div class="fill" style="width:56%; background: linear-gradient(90deg, #22c55e, #4ade80)"></div>
+              </div>
+            </div>
+          </div>
+          <div class="macro-item">
+            <div class="macro-dot" style="background:#3b82f6"></div>
+            <div class="macro-info">
+              <div class="macro-header">
+                <span class="macro-name">蛋白质</span>
+                <span class="macro-value">68 / 120g</span>
+              </div>
+              <div class="progress-bar">
+                <div class="fill" style="width:57%; background: linear-gradient(90deg, #3b82f6, #60a5fa)"></div>
+              </div>
+            </div>
+          </div>
+          <div class="macro-item">
+            <div class="macro-dot" style="background:#f97316"></div>
+            <div class="macro-info">
+              <div class="macro-header">
+                <span class="macro-name">脂肪</span>
+                <span class="macro-value">45 / 62g</span>
+              </div>
+              <div class="progress-bar">
+                <div class="fill" style="width:73%; background: linear-gradient(90deg, #f97316, #fb923c)"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 步数小卡片 -->
+        <div class="bento-card step-card">
+          <div class="icon-wrap" style="background: rgba(59,130,246,0.12)">
+            <i class="fas fa-shoe-prints text-blue"></i>
+          </div>
+          <div class="big-number">6,842</div>
+          <div class="sub-text">步 / 目标 10,000</div>
+          <div class="progress-bar" style="margin-top:8px">
+            <div class="fill" style="width:68%; background: linear-gradient(90deg, #3b82f6, #60a5fa)"></div>
+          </div>
+        </div>
+
+        <!-- 饮水小卡片 -->
+        <div class="bento-card water-card">
+          <div class="icon-wrap" style="background: rgba(34,197,94,0.12)">
+            <i class="fas fa-droplet text-green"></i>
+          </div>
+          <div class="big-number">1.2<span style="font-size:14px;font-weight:400;color:#71717a">L</span></div>
+          <div class="sub-text">饮水 / 目标 2.0L</div>
+          <div class="progress-bar" style="margin-top:8px">
+            <div class="fill" style="width:60%; background: linear-gradient(90deg, #22c55e, #4ade80)"></div>
+          </div>
+        </div>
+
+        <!-- 横幅卡片：本周进度 -->
+        <div class="bento-card banner-card">
+          <div class="banner-content">
+            <div class="banner-icon">
+              <i class="fas fa-fire text-orange"></i>
+            </div>
+            <div class="banner-text">
+              <div class="banner-title">本周已减 0.3kg，进度正常 <span style="font-size:14px">&#127919;</span></div>
+              <div class="banner-desc">坚持 23 天，距离目标还剩 6.8kg</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 今日餐食预览 -->
+        <div class="bento-card meal-preview-card">
+          <div class="card-title">
+            今日饮食
+            <span class="see-all">查看全部 <i class="fas fa-chevron-right" style="font-size:10px"></i></span>
+          </div>
+          <div class="meal-item">
+            <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?w=80&h=80&fit=crop" alt="早餐">
+            <div class="meal-info">
+              <div class="meal-name">全麦面包 + 牛奶</div>
+              <div class="meal-time">早餐 08:15</div>
+            </div>
+            <div class="meal-cal">320 <span style="font-size:11px;color:#525252">kcal</span></div>
+          </div>
+          <div class="meal-item">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=80&h=80&fit=crop" alt="午餐">
+            <div class="meal-info">
+              <div class="meal-name">红烧肉 + 米饭 + 青菜</div>
+              <div class="meal-time">午餐 12:30</div>
+            </div>
+            <div class="meal-cal">680 <span style="font-size:11px;color:#525252">kcal</span></div>
+          </div>
+        </div>
+
+        <!-- 快捷操作区 -->
+        <div class="quick-actions">
+          <div class="quick-action-item">
+            <div class="qa-icon" style="background: rgba(34,197,94,0.12)">
+              <i class="fas fa-camera text-green"></i>
+            </div>
+            <div class="qa-label">拍照记录</div>
+          </div>
+          <div class="quick-action-item">
+            <div class="qa-icon" style="background: rgba(59,130,246,0.12)">
+              <i class="fas fa-microphone text-blue"></i>
+            </div>
+            <div class="qa-label">语音输入</div>
+          </div>
+          <div class="quick-action-item">
+            <div class="qa-icon" style="background: rgba(249,115,22,0.12)">
+              <i class="fas fa-robot text-orange"></i>
+            </div>
+            <div class="qa-label">问 AI</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 底部 Tab Bar -->
+    <div class="tab-bar">
+      <a class="tab-item active" href="home.html">
+        <i class="fas fa-house"></i>
+        <span>首页</span>
+      </a>
+      <a class="tab-item" href="camera.html">
+        <i class="fas fa-camera"></i>
+        <span>拍照</span>
+      </a>
+      <a class="tab-item" href="meal-log.html">
+        <i class="fas fa-utensils"></i>
+        <span>记录</span>
+      </a>
+      <a class="tab-item" href="ai-chat.html">
+        <i class="fas fa-comment-dots"></i>
+        <span>AI</span>
+      </a>
+      <a class="tab-item" href="profile.html">
+        <i class="fas fa-user"></i>
+        <span>我的</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=393, height=852, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AI 助理 - 混合风格智能减脂助理</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #fafafa;
+      --card: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6b6b6b;
+      --text-tertiary: #999999;
+      --border: #e5e5e5;
+      --accent: #2d5a3d;
+      --black: #000000;
+      --white: #ffffff;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text-primary);
+      width: 393px;
+      height: 852px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      line-height: 1.6;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    body::-webkit-scrollbar { width: 0; }
+
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px 8px;
+      font-size: 14px;
+      font-weight: 600;
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-shrink: 0;
+    }
+    .status-bar .time { font-weight: 700; }
+    .status-bar .icons { display: flex; gap: 6px; }
+    .status-bar .icons i { font-size: 12px; }
+
+    /* 页面标题 */
+    .page-title {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 12px 20px 16px;
+      flex-shrink: 0;
+    }
+
+    /* 对话区域 */
+    .chat-area {
+      flex: 1;
+      padding: 0 20px;
+      overflow-y: auto;
+      padding-bottom: 16px;
+    }
+    .chat-area::-webkit-scrollbar { width: 0; }
+
+    /* AI 消息 */
+    .msg-ai {
+      margin-bottom: 20px;
+      animation: fadeIn 0.4s ease;
+    }
+    .msg-ai-label {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .msg-ai-text {
+      font-family: var(--font-serif);
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    .msg-ai-text strong {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .msg-ai-text ol {
+      padding-left: 20px;
+      margin-top: 8px;
+    }
+    .msg-ai-text ol li {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 4px;
+    }
+
+    /* 用户消息 */
+    .msg-user {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+      animation: fadeIn 0.4s ease;
+    }
+    .msg-user-bubble {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      max-width: 75%;
+      line-height: 1.5;
+    }
+
+    /* AI 食材清单卡片 */
+    .ai-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-top: 10px;
+      max-width: 90%;
+    }
+    .ai-card-title {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .ai-card-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .ai-card-item span:last-child {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* 底部输入区域 */
+    .input-area {
+      position: fixed;
+      bottom: 80px;
+      left: 0;
+      right: 0;
+      width: 393px;
+      padding: 12px 20px;
+      background: rgba(250,250,250,0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 150;
+      flex-shrink: 0;
+    }
+    .input-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      flex-shrink: 0;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+    .input-btn:hover {
+      background: var(--black);
+      color: var(--white);
+      border-color: var(--black);
+    }
+    .input-btn:active { transform: scale(0.9); }
+    .input-field {
+      flex: 1;
+      height: 36px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 0 16px;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      color: var(--text-primary);
+      background: var(--card);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .input-field::placeholder {
+      color: var(--text-tertiary);
+    }
+    .input-field:focus {
+      border-color: var(--black);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Tab Bar */
+    .tab-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 393px;
+      height: 80px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      padding-top: 8px;
+      z-index: 200;
+      flex-shrink: 0;
+    }
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 4px 12px;
+      text-decoration: none;
+    }
+    .tab-item i { font-size: 20px; color: var(--text-tertiary); }
+    .tab-item span { font-size: 10px; color: var(--text-tertiary); }
+    .tab-item.active i { color: var(--black); }
+    .tab-item.active span { color: var(--black); font-weight: 600; }
+    .tab-item:hover i { color: var(--text-secondary); }
+    .tab-item:active { transform: scale(0.92); }
+  </style>
+</head>
+<body>
+  <!-- iOS 状态栏 -->
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <div class="icons">
+      <i class="fas fa-signal"></i>
+      <i class="fas fa-wifi"></i>
+      <i class="fas fa-battery-full"></i>
+    </div>
+  </div>
+
+  <!-- 页面标题 -->
+  <div class="page-title">ASSISTANT</div>
+
+  <!-- 对话区域 -->
+  <div class="chat-area">
+
+    <!-- AI 消息 1 -->
+    <div class="msg-ai">
+      <div class="msg-ai-label">AI &middot; 14:30</div>
+      <div class="msg-ai-text">
+        杨弘，下午好。今天已摄入 <strong>1,260 大卡</strong>，还剩 <strong>590 大卡</strong>额度。晚餐有什么安排？
+      </div>
+    </div>
+
+    <!-- 用户消息 -->
+    <div class="msg-user">
+      <div class="msg-user-bubble">室友说要去吃火锅 😭</div>
+    </div>
+
+    <!-- AI 消息 2 -->
+    <div class="msg-ai">
+      <div class="msg-ai-label">AI &middot; 14:31</div>
+      <div class="msg-ai-text">
+        没关系，火锅也能吃得健康。建议：
+        <ol>
+          <li>选清汤锅底，避开麻辣和牛油锅</li>
+          <li>多吃蔬菜和豆腐，饱腹感强</li>
+          <li>肉类选牛肉和虾，少选五花肉</li>
+          <li>蘸料用酱油+醋，避开花生酱</li>
+          <li>预计控制在 500 大卡内完全可行</li>
+        </ol>
+      </div>
+      <!-- 食材建议卡片 -->
+      <div class="ai-card">
+        <div class="ai-card-title">Recommended Items</div>
+        <div class="ai-card-item">
+          <span>牛里脊 100g</span>
+          <span>125 kcal</span>
+        </div>
+        <div class="ai-card-item">
+          <span>鲜虾 100g</span>
+          <span>87 kcal</span>
+        </div>
+        <div class="ai-card-item">
+          <span>豆腐 150g</span>
+          <span>75 kcal</span>
+        </div>
+        <div class="ai-card-item">
+          <span>白菜 200g</span>
+          <span>34 kcal</span>
+        </div>
+        <div class="ai-card-item">
+          <span>金针菇 100g</span>
+          <span>26 kcal</span>
+        </div>
+        <div class="ai-card-item" style="border-top: 1px solid var(--border); padding-top: 8px; margin-top: 4px;">
+          <span style="font-weight:600; color: var(--text-primary);">预估总计</span>
+          <span>347 kcal</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /chat-area -->
+
+  <!-- 底部输入区域 -->
+  <div class="input-area">
+    <button class="input-btn"><i class="fas fa-microphone"></i></button>
+    <input type="text" class="input-field" placeholder="输入消息...">
+    <button class="input-btn"><i class="fas fa-camera"></i></button>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <a class="tab-item active" href="home.html">
+      <i class="fas fa-house"></i>
+      <span>首页</span>
+    </a>
+    <a class="tab-item" href="camera.html">
+      <i class="fas fa-camera"></i>
+      <span>拍照</span>
+    </a>
+    <a class="tab-item" href="meal-log.html">
+      <i class="fas fa-utensils"></i>
+      <span>记录</span>
+    </a>
+    <a class="tab-item" href="progress.html">
+      <i class="fas fa-chart-line"></i>
+      <span>进度</span>
+    </a>
+    <a class="tab-item" href="profile.html">
+      <i class="fas fa-user"></i>
+      <span>我的</span>
+    </a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.jdt.ls.java.home": "E:/JPC/Java/JDK",
+    "java.project.importHint": "gradle",
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-21",
+            "path": "E:/JPC/Java/JDK",
+            "default": true
+        }
+    ]
+}

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智能减脂助理 - Bento Grid 原型总览</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* ---- 全局重置 ---- */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #000000;
+      color: #ffffff;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---- 顶部导航 ---- */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid #1a1a1a;
+      padding: 16px 32px;
+    }
+
+    .top-bar-inner {
+      max-width: 1600px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .logo-text {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .logo-text .sub {
+      font-size: 12px;
+      color: #525252;
+      font-weight: 400;
+      margin-left: 8px;
+    }
+
+    .top-bar-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      color: #525252;
+    }
+
+    .top-bar-meta .tag {
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: #1a1a1a;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    /* ---- 页面标题区域 ---- */
+    .hero-section {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 40px 32px 20px;
+    }
+
+    .hero-section h1 {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+    }
+
+    .hero-section h1 span {
+      background: linear-gradient(135deg, #22c55e, #4ade80);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-section .subtitle {
+      font-size: 16px;
+      color: #71717a;
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    .hero-section .meta-row {
+      display: flex;
+      gap: 16px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .meta-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 10px;
+      background: #0a0a0a;
+      border: 1px solid #1a1a1a;
+      font-size: 13px;
+      color: #a1a1aa;
+    }
+
+    .meta-chip i {
+      font-size: 12px;
+    }
+
+    /* ---- 界面展示网格 ---- */
+    .screens-grid {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 24px 32px 60px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      justify-content: flex-start;
+    }
+
+    .screen-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .screen-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #d4d4d8;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .screen-label .label-tag {
+      font-size: 10px;
+      font-weight: 500;
+      color: #525252;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: #1a1a1a;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .screen-frame {
+      border-radius: 40px;
+      overflow: hidden;
+      border: 1px solid #2a2a2a;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.04),
+        0 20px 60px rgba(0,0,0,0.5),
+        0 4px 16px rgba(0,0,0,0.3);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .screen-frame:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.06),
+        0 30px 80px rgba(0,0,0,0.6),
+        0 8px 24px rgba(0,0,0,0.4);
+      border-color: #3a3a3a;
+    }
+
+    .screen-frame iframe {
+      display: block;
+      width: 393px;
+      height: 852px;
+      border: none;
+    }
+
+    /* ---- 页脚 ---- */
+    .footer {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 20px 32px 40px;
+      border-top: 1px solid #1a1a1a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #333;
+    }
+
+    .footer a {
+      color: #525252;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer a:hover {
+      color: #22c55e;
+    }
+
+    /* ---- 响应式 ---- */
+    @media (max-width: 900px) {
+      .hero-section h1 {
+        font-size: 28px;
+      }
+
+      .screen-frame iframe {
+        width: 340px;
+        height: 738px;
+      }
+
+      .screens-grid {
+        padding: 20px 16px 40px;
+        gap: 24px;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 顶部导航 -->
+  <div class="top-bar">
+    <div class="top-bar-inner">
+      <div class="logo-area">
+        <div class="logo-icon"><i class="fas fa-fire-flame-curved"></i></div>
+        <div class="logo-text">
+          SlimAI
+          <span class="sub">Prototype Gallery</span>
+        </div>
+      </div>
+      <div class="top-bar-meta">
+        <span class="tag">iPhone 15 Pro</span>
+        <span class="tag">393 x 852</span>
+        <span class="tag">Bento Grid</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 标题区域 -->
+  <div class="hero-section">
+    <h1>智能减脂助理<br><span>高保真原型总览</span></h1>
+    <div class="subtitle">
+      Bento Grid 便当盒风格设计，包含 6 个核心界面。每个界面模拟 iPhone 15 Pro 真实尺寸（393 x 852pt）。
+    </div>
+    <div class="meta-row">
+      <div class="meta-chip"><i class="fas fa-palette"></i> 暗色主题</div>
+      <div class="meta-chip"><i class="fas fa-grip"></i> Bento Grid</div>
+      <div class="meta-chip"><i class="fas fa-mobile-screen"></i> iOS 风格</div>
+      <div class="meta-chip"><i class="fas fa-wand-magic-sparkles"></i> AI 驱动</div>
+      <div class="meta-chip"><i class="fas fa-file-code"></i> 6 个页面</div>
+    </div>
+  </div>
+
+  <!-- 界面展示区 -->
+  <div class="screens-grid">
+
+    <!-- 首页仪表盘 -->
+    <div class="screen-wrapper">
+      <div class="screen-label">
+        首页仪表盘
+        <span class="label-tag">Home</span>
+      </div>
+      <div class="screen-frame">
+        <iframe src="home.html" loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <!-- 拍照识别 -->
+    <div class="screen-wrapper">
+      <div class="screen-label">
+        拍照识别
+        <span class="label-tag">Camera</span>
+      </div>
+      <div class="screen-frame">
+        <iframe src="camera.html" loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <!-- 饮食记录 -->
+    <div class="screen-wrapper">
+      <div class="screen-label">
+        饮食记录
+        <span class="label-tag">Meal Log</span>
+      </div>
+      <div class="screen-frame">
+        <iframe src="meal-log.html" loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <!-- 进度追踪 -->
+    <div class="screen-wrapper">
+      <div class="screen-label">
+        进度追踪
+        <span class="label-tag">Progress</span>
+      </div>
+      <div class="screen-frame">
+        <iframe src="progress.html" loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <!-- AI 助理 -->
+    <div class="screen-wrapper">
+      <div class="screen-label">
+        AI 助理
+        <span class="label-tag">AI Chat</span>
+      </div>
+      <div class="screen-frame">
+        <iframe src="ai-chat.html" loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <!-- 个人中心 -->
+    <div class="screen-wrapper">
+      <div class="screen-label">
+        个人中心
+        <span class="label-tag">Profile</span>
+      </div>
+      <div class="screen-frame">
+        <iframe src="profile.html" loading="lazy"></iframe>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 页脚 -->
+  <div class="footer">
+    <span>SlimAI Prototype &copy; 2026</span>
+    <span>Built with HTML + CSS + Inter Font</span>
+  </div>
+</body>
+</html>

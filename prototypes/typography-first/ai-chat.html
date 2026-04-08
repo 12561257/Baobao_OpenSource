@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 助理 - 智能减脂助理</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #000000;
+      --white: #ffffff;
+      --gray-333: #333333;
+      --gray-666: #666666;
+      --gray-999: #999999;
+      --gray-ccc: #cccccc;
+      --gray-eee: #eeeeee;
+      --gray-f5: #f5f5f5;
+      --font-serif: 'Playfair Display', 'Georgia', serif;
+      --font-sans: 'Inter', 'system-ui', sans-serif;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--white);
+      color: var(--black);
+      width: 393px;
+      height: 852px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* iOS 状态栏 */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 28px 0;
+      height: 54px;
+      flex-shrink: 0;
+    }
+    .status-bar .time { font-size: 15px; font-weight: 600; letter-spacing: 0.02em; }
+    .status-bar .icons { display: flex; align-items: center; gap: 6px; }
+    .status-bar .icons svg { width: 16px; height: 16px; }
+
+    /* 页面标题 */
+    .page-header {
+      padding: 4px 32px 0;
+      border-bottom: 2px solid var(--black);
+      flex-shrink: 0;
+    }
+    .page-header h1 {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      padding-bottom: 16px;
+    }
+
+    /* 对话区域 */
+    .chat-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .chat-area::-webkit-scrollbar { display: none; }
+
+    /* AI 消息 - 左对齐，衬线字体，无气泡 */
+    .msg-ai {
+      align-self: flex-start;
+      max-width: 85%;
+    }
+    .msg-ai .sender {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray-999);
+      margin-bottom: 8px;
+    }
+    .msg-ai .text {
+      font-family: var(--font-serif);
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--gray-333);
+    }
+
+    /* 用户消息 - 右对齐，无衬线，黑底白字 */
+    .msg-user {
+      align-self: flex-end;
+      max-width: 75%;
+    }
+    .msg-user .text {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--white);
+      background: var(--black);
+      padding: 12px 16px;
+    }
+
+    /* 时间分隔 */
+    .time-divider {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--gray-ccc);
+      letter-spacing: 0.1em;
+      padding: 8px 0;
+    }
+
+    /* 输入区域 */
+    .input-area {
+      flex-shrink: 0;
+      padding: 12px 24px 0;
+      border-top: 0.5px solid var(--gray-eee);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .input-field {
+      flex: 1;
+      padding: 12px 16px;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--black);
+      background: transparent;
+      border: 0.5px solid var(--gray-ccc);
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+    .input-field::placeholder {
+      color: var(--gray-ccc);
+    }
+    .input-field:focus {
+      border-color: var(--black);
+    }
+    .send-btn {
+      width: 40px;
+      height: 40px;
+      background: var(--black);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      flex-shrink: 0;
+    }
+    .send-btn:hover {
+      background: var(--gray-333);
+      transform: scale(0.95);
+    }
+    .send-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--white);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    /* 底部 Tab Bar */
+    .tab-bar {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0 28px;
+      border-top: 0.5px solid var(--gray-eee);
+      background: var(--white);
+    }
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+    .tab-item:hover { opacity: 0.6; }
+    .tab-item .tab-icon svg {
+      width: 18px; height: 18px; stroke: var(--gray-999); fill: none; stroke-width: 1.5;
+    }
+    .tab-item .tab-label {
+      font-size: 10px; font-weight: 400; color: var(--gray-999); letter-spacing: 0.04em;
+    }
+    .tab-item.active .tab-icon svg { stroke: var(--black); stroke-width: 2; }
+    .tab-item.active .tab-label { color: var(--black); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <!-- iOS 状态栏 -->
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <div class="icons">
+      <svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="0.5" fill="#000"/><rect x="5" y="5" width="3" height="7" rx="0.5" fill="#000"/><rect x="10" y="2" width="3" height="10" rx="0.5" fill="#000"/><rect x="15" y="0" width="3" height="12" rx="0.5" fill="#000"/></svg>
+      <svg viewBox="0 0 16 12"><path d="M8 10.5a1 1 0 110 2 1 1 0 010-2zM4.5 8.5C5.5 7.2 6.7 6.5 8 6.5s2.5.7 3.5 2M2 5.5C3.7 3.5 5.7 2.5 8 2.5s4.3 1 6 3" stroke="#000" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>
+      <svg viewBox="0 0 28 13"><rect x="0" y="0.5" width="24" height="12" rx="2.5" stroke="#000" stroke-width="1" fill="none"/><rect x="2" y="2.5" width="18" height="8" rx="1" fill="#000"/><rect x="25" y="4" width="2.5" height="5" rx="1" fill="#000"/></svg>
+    </div>
+  </div>
+
+  <!-- 页面标题 -->
+  <div class="page-header">
+    <h1>Assistant</h1>
+  </div>
+
+  <!-- 对话区域 -->
+  <div class="chat-area">
+    <div class="time-divider">今天 14:32</div>
+
+    <!-- AI 消息 -->
+    <div class="msg-ai">
+      <div class="sender">AI Assistant</div>
+      <div class="text">
+        杨弘，下午好。你今天已摄入 1,200 大卡，还剩 650 大卡。晚餐有什么安排？
+      </div>
+    </div>
+
+    <!-- 用户消息 -->
+    <div class="msg-user">
+      <div class="text">室友要去吃火锅</div>
+    </div>
+
+    <!-- AI 回复 -->
+    <div class="msg-ai">
+      <div class="sender">AI Assistant</div>
+      <div class="text">
+        火锅也能吃得健康。清汤锅底，多选蔬菜和豆腐，肉类用牛肉和虾。蘸料用酱油醋代替花生酱。控制在 600 大卡内完全可行。
+      </div>
+    </div>
+
+    <!-- 用户消息 -->
+    <div class="msg-user">
+      <div class="text">有什么推荐的菜品吗</div>
+    </div>
+
+    <!-- AI 回复 -->
+    <div class="msg-ai">
+      <div class="sender">AI Assistant</div>
+      <div class="text">
+        可以参考这个搭配：生菜 200g、豆腐 150g、肥牛 100g、大虾 80g、金针菇 100g、冬瓜 150g。热量约 480 大卡，蛋白质 42g，营养均衡。记得多喝水，少喝饮料。
+      </div>
+    </div>
+  </div>
+
+  <!-- 输入区域 -->
+  <div class="input-area">
+    <input type="text" class="input-field" placeholder="输入消息...">
+    <button class="send-btn" title="发送">
+      <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="tab-bar">
+    <a href="home.html" class="tab-item">
+      <div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M3 12L5 10M5 10L12 3L19 10M5 10V20C5 20.55 5.45 21 6 21H9M19 10L21 12M19 10V20C19 20.55 18.55 21 18 21H15M9 21C9 21 9 15 12 15C15 15 15 21 15 21M9 21H15" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="tab-label">首页</span>
+    </a>
+    <a href="camera.html" class="tab-item">
+      <div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="13" r="4"/></svg></div>
+      <span class="tab-label">拍照</span>
+    </a>
+    <a href="meal-log.html" class="tab-item">
+      <div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+      <span class="tab-label">记录</span>
+    </a>
+    <a href="ai-chat.html" class="tab-item active">
+      <div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="tab-label">AI</span>
+    </a>
+    <a href="profile.html" class="tab-item">
+      <div class="tab-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <span class="tab-label">我的</span>
+    </a>
+  </div>
+
+</body>
+</html>

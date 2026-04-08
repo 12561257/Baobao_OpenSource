@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=393, height=852, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>个人中心 - 混合风格智能减脂助理</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #fafafa;
+      --card: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6b6b6b;
+      --text-tertiary: #999999;
+      --border: #e5e5e5;
+      --accent: #2d5a3d;
+      --black: #000000;
+      --white: #ffffff;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text-primary);
+      width: 393px;
+      height: 852px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      line-height: 1.6;
+      position: relative;
+    }
+    body::-webkit-scrollbar { width: 0; }
+
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px 8px;
+      font-size: 14px;
+      font-weight: 600;
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .status-bar .time { font-weight: 700; }
+    .status-bar .icons { display: flex; gap: 6px; }
+    .status-bar .icons i { font-size: 12px; }
+
+    .content {
+      padding: 0 20px 100px;
+    }
+
+    /* 页面标题 */
+    .page-title {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 16px 0 24px;
+    }
+
+    /* 姓名区域 */
+    .profile-hero {
+      text-align: center;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
+    }
+    .profile-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--black);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0 auto 16px;
+    }
+    .profile-name {
+      font-family: var(--font-serif);
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .profile-goal {
+      font-family: var(--font-serif);
+      font-size: 15px;
+      font-style: italic;
+      color: var(--accent);
+      margin-top: 8px;
+      letter-spacing: 0.02em;
+    }
+
+    /* 编辑排版式数据 */
+    .data-section {
+      margin-bottom: 28px;
+    }
+    .data-section-title {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 14px;
+    }
+    .data-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .data-line:last-child { border-bottom: none; }
+    .data-line-label {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .data-line-value {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* 成就区域 */
+    .achievements-section {
+      margin-bottom: 28px;
+    }
+    .achievement-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .achievement-card:hover { transform: scale(0.98); }
+    .achievement-icon {
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+    .achievement-text {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    .achievement-sub {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      color: var(--text-tertiary);
+      margin-top: 2px;
+    }
+
+    /* 设置列表 */
+    .settings-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .settings-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .settings-item:hover {
+      background: #f5f5f5;
+    }
+    .settings-item:active {
+      background: #eee;
+    }
+    .settings-item + .settings-item {
+      border-top: 1px solid #f0f0f0;
+    }
+    .settings-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .settings-item-left i {
+      font-size: 16px;
+      color: var(--text-tertiary);
+      width: 20px;
+      text-align: center;
+    }
+    .settings-item-left span {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+    .settings-item-arrow {
+      color: var(--text-tertiary);
+      font-size: 12px;
+    }
+
+    /* Tab Bar */
+    .tab-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 393px;
+      height: 80px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      padding-top: 8px;
+      z-index: 200;
+    }
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 4px 12px;
+      text-decoration: none;
+    }
+    .tab-item i { font-size: 20px; color: var(--text-tertiary); }
+    .tab-item span { font-size: 10px; color: var(--text-tertiary); }
+    .tab-item.active i { color: var(--black); }
+    .tab-item.active span { color: var(--black); font-weight: 600; }
+    .tab-item:hover i { color: var(--text-secondary); }
+    .tab-item:active { transform: scale(0.92); }
+  </style>
+</head>
+<body>
+  <!-- iOS 状态栏 -->
+  <div class="status-bar">
+    <span class="time">9:41</span>
+    <div class="icons">
+      <i class="fas fa-signal"></i>
+      <i class="fas fa-wifi"></i>
+      <i class="fas fa-battery-full"></i>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- 页面标题 -->
+    <div class="page-title">PROFILE</div>
+
+    <!-- 姓名区域 -->
+    <div class="profile-hero">
+      <div class="profile-avatar">杨</div>
+      <div class="profile-name">杨弘</div>
+      <div class="profile-goal">Target: 70kg by June 2026</div>
+    </div>
+
+    <!-- 编辑排版式数据 -->
+    <div class="data-section">
+      <div class="data-section-title">Body Data</div>
+      <div class="data-line">
+        <span class="data-line-label">身高</span>
+        <span class="data-line-value">175 cm</span>
+      </div>
+      <div class="data-line">
+        <span class="data-line-label">当前体重</span>
+        <span class="data-line-value">76.8 kg</span>
+      </div>
+      <div class="data-line">
+        <span class="data-line-label">目标体重</span>
+        <span class="data-line-value">70 kg</span>
+      </div>
+      <div class="data-line">
+        <span class="data-line-label">BMI</span>
+        <span class="data-line-value">25.1</span>
+      </div>
+      <div class="data-line">
+        <span class="data-line-label">活动等级</span>
+        <span class="data-line-value">轻度</span>
+      </div>
+      <div class="data-line">
+        <span class="data-line-label">每日预算</span>
+        <span class="data-line-value">1,850 kcal</span>
+      </div>
+    </div>
+
+    <!-- 成就区域 -->
+    <div class="achievements-section">
+      <div class="data-section-title">Achievements</div>
+      <div class="achievement-card">
+        <div class="achievement-icon">&#128293;</div>
+        <div>
+          <div class="achievement-text">连续打卡 23 天</div>
+          <div class="achievement-sub">Streak Record</div>
+        </div>
+      </div>
+      <div class="achievement-card">
+        <div class="achievement-icon">&#127919;</div>
+        <div>
+          <div class="achievement-text">周达标率 85%</div>
+          <div class="achievement-sub">Weekly Target</div>
+        </div>
+      </div>
+      <div class="achievement-card">
+        <div class="achievement-icon">&#9889;</div>
+        <div>
+          <div class="achievement-text">累计减重 2.2 kg</div>
+          <div class="achievement-sub">Total Lost</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 设置列表 -->
+    <div class="data-section-title" style="margin-bottom:12px;">Settings</div>
+    <div class="settings-section">
+      <div class="settings-item">
+        <div class="settings-item-left">
+          <i class="fas fa-bullseye"></i>
+          <span>目标设置</span>
+        </div>
+        <i class="fas fa-chevron-right settings-item-arrow"></i>
+      </div>
+      <div class="settings-item">
+        <div class="settings-item-left">
+          <i class="fas fa-leaf"></i>
+          <span>饮食偏好</span>
+        </div>
+        <i class="fas fa-chevron-right settings-item-arrow"></i>
+      </div>
+      <div class="settings-item">
+        <div class="settings-item-left">
+          <i class="fas fa-bell"></i>
+          <span>通知设置</span>
+        </div>
+        <i class="fas fa-chevron-right settings-item-arrow"></i>
+      </div>
+      <div class="settings-item">
+        <div class="settings-item-left">
+          <i class="fas fa-download"></i>
+          <span>数据导出</span>
+        </div>
+        <i class="fas fa-chevron-right settings-item-arrow"></i>
+      </div>
+      <div class="settings-item">
+        <div class="settings-item-left">
+          <i class="fas fa-info-circle"></i>
+          <span>关于应用</span>
+        </div>
+        <i class="fas fa-chevron-right settings-item-arrow"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <a class="tab-item" href="home.html">
+      <i class="fas fa-house"></i>
+      <span>首页</span>
+    </a>
+    <a class="tab-item" href="camera.html">
+      <i class="fas fa-camera"></i>
+      <span>拍照</span>
+    </a>
+    <a class="tab-item" href="meal-log.html">
+      <i class="fas fa-utensils"></i>
+      <span>记录</span>
+    </a>
+    <a class="tab-item" href="progress.html">
+      <i class="fas fa-chart-line"></i>
+      <span>进度</span>
+    </a>
+    <a class="tab-item active" href="profile.html">
+      <i class="fas fa-user"></i>
+      <span>我的</span>
+    </a>
+  </div>
+</body>
+</html>

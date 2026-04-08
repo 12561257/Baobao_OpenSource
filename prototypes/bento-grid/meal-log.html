@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=393, height=852, initial-scale=1.0, user-scalable=no">
+  <title>饮食记录 - 智能减脂助理</title>
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* 饮食记录页面特有样式 */
+
+    .page-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 0 14px 0;
+    }
+
+    .page-header-top h1 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .page-header-top .calendar-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: #09090B;
+      border: 1px solid #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #a1a1aa;
+      font-size: 15px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .page-header-top .calendar-btn:hover {
+      border-color: #2a2a2a;
+      color: #fff;
+    }
+
+    /* 日期选择器 */
+    .date-selector {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 18px;
+      padding: 0 4px;
+    }
+
+    .date-selector .arrow {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #525252;
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+
+    .date-selector .arrow:hover {
+      background: #1a1a1a;
+      color: #a1a1aa;
+    }
+
+    .date-selector .dates {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .date-selector .date-item {
+      width: 42px;
+      text-align: center;
+      padding: 6px 0;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .date-selector .date-item:hover {
+      background: #1a1a1a;
+    }
+
+    .date-selector .date-item .weekday {
+      font-size: 10px;
+      color: #525252;
+      font-weight: 500;
+    }
+
+    .date-selector .date-item .day {
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .date-selector .date-item.active {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+    }
+
+    .date-selector .date-item.active .weekday {
+      color: rgba(255,255,255,0.7);
+    }
+
+    .date-selector .date-item.active .day {
+      color: #fff;
+    }
+
+    /* 热量汇总条 */
+    .calorie-summary-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      background: #09090B;
+      border: 1px solid #1a1a1a;
+      border-radius: 18px;
+      margin-bottom: 16px;
+    }
+
+    .calorie-summary-bar .csb-item {
+      flex: 1;
+      text-align: center;
+    }
+
+    .calorie-summary-bar .csb-item .csb-value {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .calorie-summary-bar .csb-item .csb-label {
+      font-size: 11px;
+      color: #525252;
+      margin-top: 2px;
+    }
+
+    .calorie-summary-bar .csb-divider {
+      width: 1px;
+      height: 28px;
+      background: #1a1a1a;
+    }
+
+    /* 餐次分组 */
+    .meal-group {
+      margin-bottom: 14px;
+    }
+
+    .meal-group-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 4px;
+      margin-bottom: 8px;
+    }
+
+    .meal-group-header .meal-type {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .meal-group-header .meal-type-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+
+    .meal-group-header .meal-type-name {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .meal-group-header .meal-type-cal {
+      font-size: 13px;
+      color: #71717a;
+      font-weight: 500;
+    }
+
+    .meal-group-header .add-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: #1a1a1a;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #525252;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .meal-group-header .add-btn:hover {
+      background: #2a2a2a;
+      color: #22c55e;
+    }
+
+    /* 食物记录条目 */
+    .food-entry {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: #09090B;
+      border: 1px solid #1a1a1a;
+      border-radius: 16px;
+      margin-bottom: 8px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .food-entry:hover {
+      border-color: #2a2a2a;
+      transform: translateX(2px);
+    }
+
+    .food-entry img {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .food-entry .entry-info {
+      flex: 1;
+    }
+
+    .food-entry .entry-name {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .food-entry .entry-detail {
+      font-size: 12px;
+      color: #525252;
+      margin-top: 2px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .food-entry .entry-detail .dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #525252;
+      align-self: center;
+    }
+
+    .food-entry .entry-cal {
+      font-size: 16px;
+      font-weight: 600;
+      color: #d4d4d8;
+      flex-shrink: 0;
+    }
+
+    .food-entry .entry-cal small {
+      font-size: 11px;
+      color: #525252;
+      font-weight: 400;
+    }
+
+    /* FAB 按钮 */
+    .fab {
+      position: absolute;
+      bottom: 90px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(34,197,94,0.3);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 50;
+    }
+
+    .fab:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 32px rgba(34,197,94,0.4);
+    }
+
+    .fab:active {
+      transform: scale(0.95);
+    }
+  </style>
+</head>
+<body>
+  <div class="iphone-frame">
+    <!-- iOS 状态栏 -->
+    <div class="status-bar">
+      <span class="time">14:32</span>
+      <div class="dynamic-island"></div>
+      <div class="icons">
+        <i class="fas fa-signal" style="font-size:13px"></i>
+        <i class="fas fa-wifi" style="font-size:13px"></i>
+        <div class="battery">
+          <div class="battery-icon">
+            <div class="battery-fill"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 页面内容 -->
+    <div class="page-content" style="position:relative">
+      <!-- 标题 -->
+      <div class="page-header-top">
+        <h1>今日饮食</h1>
+        <button class="calendar-btn"><i class="fas fa-calendar-days"></i></button>
+      </div>
+
+      <!-- 日期选择器 -->
+      <div class="date-selector">
+        <div class="arrow"><i class="fas fa-chevron-left"></i></div>
+        <div class="dates">
+          <div class="date-item">
+            <div class="weekday">一</div>
+            <div class="day">30</div>
+          </div>
+          <div class="date-item">
+            <div class="weekday">二</div>
+            <div class="day">31</div>
+          </div>
+          <div class="date-item">
+            <div class="weekday">三</div>
+            <div class="day">1</div>
+          </div>
+          <div class="date-item active">
+            <div class="weekday">四</div>
+            <div class="day">2</div>
+          </div>
+          <div class="date-item">
+            <div class="weekday">五</div>
+            <div class="day">3</div>
+          </div>
+          <div class="date-item">
+            <div class="weekday">六</div>
+            <div class="day">4</div>
+          </div>
+          <div class="date-item">
+            <div class="weekday">日</div>
+            <div class="day">5</div>
+          </div>
+        </div>
+        <div class="arrow"><i class="fas fa-chevron-right"></i></div>
+      </div>
+
+      <!-- 热量汇总条 -->
+      <div class="calorie-summary-bar">
+        <div class="csb-item">
+          <div class="csb-value text-green">1,200</div>
+          <div class="csb-label">已摄入</div>
+        </div>
+        <div class="csb-divider"></div>
+        <div class="csb-item">
+          <div class="csb-value">1,850</div>
+          <div class="csb-label">目标</div>
+        </div>
+        <div class="csb-divider"></div>
+        <div class="csb-item">
+          <div class="csb-value text-blue">650</div>
+          <div class="csb-label">剩余</div>
+        </div>
+      </div>
+
+      <!-- 早餐 -->
+      <div class="meal-group">
+        <div class="meal-group-header">
+          <div class="meal-type">
+            <div class="meal-type-icon" style="background:rgba(251,191,36,0.12)">
+              <i class="fas fa-sun" style="color:#fbbf24;font-size:12px"></i>
+            </div>
+            <span class="meal-type-name">早餐</span>
+            <span class="meal-type-cal">320 kcal</span>
+          </div>
+          <button class="add-btn"><i class="fas fa-plus"></i></button>
+        </div>
+        <div class="food-entry">
+          <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=80&h=80&fit=crop" alt="全麦面包">
+          <div class="entry-info">
+            <div class="entry-name">全麦面包</div>
+            <div class="entry-detail">
+              <span>2 片</span>
+              <span class="dot"></span>
+              <span>08:15</span>
+            </div>
+          </div>
+          <div class="entry-cal">180 <small>kcal</small></div>
+        </div>
+        <div class="food-entry">
+          <img src="https://images.unsplash.com/photo-1563636619-e9143da7973b?w=80&h=80&fit=crop" alt="牛奶">
+          <div class="entry-info">
+            <div class="entry-name">脱脂牛奶</div>
+            <div class="entry-detail">
+              <span>250ml</span>
+              <span class="dot"></span>
+              <span>08:15</span>
+            </div>
+          </div>
+          <div class="entry-cal">140 <small>kcal</small></div>
+        </div>
+      </div>
+
+      <!-- 午餐 -->
+      <div class="meal-group">
+        <div class="meal-group-header">
+          <div class="meal-type">
+            <div class="meal-type-icon" style="background:rgba(249,115,22,0.12)">
+              <i class="fas fa-cloud-sun" style="color:#f97316;font-size:12px"></i>
+            </div>
+            <span class="meal-type-name">午餐</span>
+            <span class="meal-type-cal">680 kcal</span>
+          </div>
+          <button class="add-btn"><i class="fas fa-plus"></i></button>
+        </div>
+        <div class="food-entry">
+          <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=80&h=80&fit=crop" alt="红烧肉">
+          <div class="entry-info">
+            <div class="entry-name">红烧肉</div>
+            <div class="entry-detail">
+              <span>约 280g</span>
+              <span class="dot"></span>
+              <span>12:30</span>
+            </div>
+          </div>
+          <div class="entry-cal">420 <small>kcal</small></div>
+        </div>
+        <div class="food-entry">
+          <img src="https://images.unsplash.com/photo-1516684732162-798a0062be99?w=80&h=80&fit=crop" alt="米饭">
+          <div class="entry-info">
+            <div class="entry-name">米饭</div>
+            <div class="entry-detail">
+              <span>约 150g</span>
+              <span class="dot"></span>
+              <span>12:30</span>
+            </div>
+          </div>
+          <div class="entry-cal">174 <small>kcal</small></div>
+        </div>
+        <div class="food-entry">
+          <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=80&h=80&fit=crop" alt="青菜">
+          <div class="entry-info">
+            <div class="entry-name">炒青菜</div>
+            <div class="entry-detail">
+              <span>约 100g</span>
+              <span class="dot"></span>
+              <span>12:30</span>
+            </div>
+          </div>
+          <div class="entry-cal">86 <small>kcal</small></div>
+        </div>
+      </div>
+
+      <!-- 晚餐 -->
+      <div class="meal-group">
+        <div class="meal-group-header">
+          <div class="meal-type">
+            <div class="meal-type-icon" style="background:rgba(139,92,246,0.12)">
+              <i class="fas fa-moon" style="color:#8b5cf6;font-size:12px"></i>
+            </div>
+            <span class="meal-type-name">晚餐</span>
+            <span class="meal-type-cal" style="color:#525252">尚未记录</span>
+          </div>
+          <button class="add-btn"><i class="fas fa-plus"></i></button>
+        </div>
+        <div class="food-entry" style="justify-content:center; border-style: dashed; opacity: 0.5; padding: 18px 14px;">
+          <div style="text-align:center">
+            <i class="fas fa-plus" style="font-size:18px; color:#525252"></i>
+            <div style="font-size:12px; color:#525252; margin-top:4px">添加晚餐记录</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 加餐 -->
+      <div class="meal-group">
+        <div class="meal-group-header">
+          <div class="meal-type">
+            <div class="meal-type-icon" style="background:rgba(34,197,94,0.12)">
+              <i class="fas fa-cookie-bite" style="color:#22c55e;font-size:12px"></i>
+            </div>
+            <span class="meal-type-name">加餐</span>
+            <span class="meal-type-cal">200 kcal</span>
+          </div>
+          <button class="add-btn"><i class="fas fa-plus"></i></button>
+        </div>
+        <div class="food-entry">
+          <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=80&h=80&fit=crop" alt="苹果">
+          <div class="entry-info">
+            <div class="entry-name">苹果</div>
+            <div class="entry-detail">
+              <span>1 个（约 200g）</span>
+              <span class="dot"></span>
+              <span>15:00</span>
+            </div>
+          </div>
+          <div class="entry-cal">105 <small>kcal</small></div>
+        </div>
+        <div class="food-entry">
+          <img src="https://images.unsplash.com/photo-1574226516831-e1dff420e562?w=80&h=80&fit=crop" alt="酸奶">
+          <div class="entry-info">
+            <div class="entry-name">希腊酸奶</div>
+            <div class="entry-detail">
+              <span>100g</span>
+              <span class="dot"></span>
+              <span>10:30</span>
+            </div>
+          </div>
+          <div class="entry-cal">95 <small>kcal</small></div>
+        </div>
+      </div>
+
+      <!-- 留出 FAB 空间 -->
+      <div style="height: 70px"></div>
+
+      <!-- FAB -->
+      <button class="fab"><i class="fas fa-plus"></i></button>
+    </div>
+
+    <!-- 底部 Tab Bar -->
+    <div class="tab-bar">
+      <a class="tab-item" href="home.html">
+        <i class="fas fa-house"></i>
+        <span>首页</span>
+      </a>
+      <a class="tab-item" href="camera.html">
+        <i class="fas fa-camera"></i>
+        <span>拍照</span>
+      </a>
+      <a class="tab-item active" href="meal-log.html">
+        <i class="fas fa-utensils"></i>
+        <span>记录</span>
+      </a>
+      <a class="tab-item" href="ai-chat.html">
+        <i class="fas fa-comment-dots"></i>
+        <span>AI</span>
+      </a>
+      <a class="tab-item" href="profile.html">
+        <i class="fas fa-user"></i>
+        <span>我的</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">饱饱开源版</string>
+
+    <!-- ========== 通用 ========== -->
+    <string name="common_cancel">取消</string>
+    <string name="common_confirm">确认</string>
+    <string name="common_save">保存</string>
+    <string name="common_delete">删除</string>
+    <string name="common_edit">编辑</string>
+    <string name="common_add">添加</string>
+    <string name="common_back">返回</string>
+    <string name="common_loading">加载中…</string>
+    <string name="common_kg">kg</string>
+    <string name="common_cm">cm</string>
+    <string name="common_kcal">kcal</string>
+    <string name="common_error_prefix">错误: %s</string>
+    <string name="common_submit">提交</string>
+    <string name="common_record">记录</string>
+
+    <!-- ========== 底部导航 ========== -->
+    <string name="nav_home">首页</string>
+    <string name="nav_meal_log">记录</string>
+    <string name="nav_progress">进度</string>
+    <string name="nav_ai_chat">AI助手</string>
+    <string name="nav_profile">我的</string>
+
+    <!-- ========== 餐次类型 ========== -->
+    <string name="meal_type_breakfast">早餐</string>
+    <string name="meal_type_lunch">午餐</string>
+    <string name="meal_type_dinner">晚餐</string>
+    <string name="meal_type_snack">加餐</string>
+
+    <!-- ========== 首页 ========== -->
+    <string name="home_greeting">你好，%s</string>
+    <string name="home_today_calories">今日热量</string>
+    <string name="home_calories_available">大卡可用</string>
+    <string name="home_carbs">碳水</string>
+    <string name="home_protein">蛋白质</string>
+    <string name="home_fat">脂肪</string>
+    <string name="home_water">饮水</string>
+    <string name="home_water_remove">减水</string>
+    <string name="home_water_add">加水</string>
+    <string name="home_weekly_overview">本周概览</string>
+    <string name="home_weekly_summary">本周平均每日 %1$s 大卡，达标率 %2$d%%。进度正常，继续加油。</string>
+    <string name="home_ask_ai">问 AI</string>
+    <string name="home_no_record_insight">今天还没有记录，开始记录你的第一餐吧！</string>
+
+    <!-- ========== AI 聊天 ========== -->
+    <string name="chat_ai_label">AI</string>
+    <string name="chat_upload_image">上传图片</string>
+    <string name="chat_input_hint">说点什么…</string>
+    <string name="chat_send">发送</string>
+    <string name="chat_ai_comment">AI 评语</string>
+    <string name="chat_sent_image">已发送图片</string>
+    <string name="chat_food_recorded">✅ 已记录%1$s：%2$s（共%3$d大卡）</string>
+    <string name="chat_exercise_recorded">🏃 已记录运动：%1$s（消耗%2$d大卡）</string>
+    <string name="chat_food_deleted">🗑️ 已删除：%1$s（-%2$d大卡）</string>
+
+    <!-- ========== 进度页 ========== -->
+    <string name="progress_title">进度</string>
+    <string name="progress_weight_lost">已减重 %s kg</string>
+    <string name="progress_record_weight">记录体重</string>
+    <string name="progress_no_weight_data">暂无体重记录</string>
+    <string name="progress_to_goal">距目标</string>
+    <string name="progress_bmi">BMI</string>
+    <string name="progress_avg_daily_intake">日均摄入</string>
+    <string name="progress_weekly_report">本周报告</string>
+    <string name="progress_on_track_days">达标天数</string>
+    <string name="progress_avg_intake">平均摄入</string>
+    <string name="progress_exercise_burned">运动消耗</string>
+    <string name="progress_weekly_weight_change">周减重</string>
+    <string name="progress_assessment">进度评估</string>
+    <string name="progress_assessment_normal">正常 ✓</string>
+    <string name="progress_ai_advice">AI 建议</string>
+    <string name="progress_ai_advice_content">保持良好的记录习惯，持续追踪你的健康数据，让每一天都朝着目标前进。</string>
+    <string name="progress_record_today_weight">记录今日体重</string>
+    <string name="progress_weight_label">体重(kg)</string>
+
+    <!-- ========== 拍照识别 ========== -->
+    <string name="camera_need_permission">需要相机权限才能拍照</string>
+    <string name="camera_or_text">或者文字描述</string>
+    <string name="camera_take_photo">拍照识别</string>
+    <string name="camera_pick_from_gallery">从相册选择</string>
+    <string name="camera_food_photo">食物照片</string>
+    <string name="camera_input_food_desc">输入食物描述</string>
+    <string name="camera_input_placeholder">例：红烧肉280g，米饭150g，青菜100g</string>
+    <string name="camera_analyzing">分析中…</string>
+    <string name="camera_ai_analyze">AI 分析</string>
+    <string name="camera_total">合计</string>
+    <string name="camera_macro_summary">碳水 %1$dg · 蛋白质 %2$dg · 脂肪 %3$dg</string>
+    <string name="camera_confirm_record">确认记录</string>
+
+    <!-- ========== API 设置 ========== -->
+    <string name="setup_app_name">饱饱</string>
+    <string name="setup_subtitle">开启你的智能减脂之旅</string>
+    <string name="setup_api_config">API 配置</string>
+    <string name="setup_api_key_placeholder">输入你的火山方舟 API Key</string>
+    <string name="setup_model_label">模型 ID 或接入点 ID</string>
+    <string name="setup_model_placeholder">如 doubao-2-5-pro 或 ep-xxxxx</string>
+    <string name="setup_base_url_label">API 服务地址 (Base URL)</string>
+    <string name="setup_base_url_placeholder">如 https://ark.cn-beijing.volces.com/api/v3</string>
+    <string name="setup_testing">检测中…</string>
+    <string name="setup_test_connection">检测连接</string>
+    <string name="setup_hide_help">收起帮助</string>
+    <string name="setup_how_to_get">如何获取？</string>
+    <string name="setup_save_and_start">保存并开始</string>
+    <string name="setup_quick_steps_title">快速获取步骤</string>
+    <string name="setup_quick_steps_content">1. 访问火山方舟控制台 (console.volcengine.com/ark)\n2. 注册并登录 → 创建 API Key\n3. 在「推理」中创建接入点（选豆包模型）\n4. 复制接入点 ID（ep-xxx）或使用预置模型 ID</string>
+    <string name="setup_tutorial_title">图文教程 (保姆级)</string>
+    <string name="setup_feishu_tutorial">飞书文档教程</string>
+    <string name="setup_view">查看</string>
+    <string name="setup_copy_link">复制链接</string>
+    <string name="setup_preset_custom">自定义</string>
+
+    <!-- ========== 引导页 ========== -->
+    <string name="onboarding_hello">你好 👋</string>
+    <string name="onboarding_intro">让我先了解一下你，\n才能给出最适合你的饮食计划。</string>
+    <string name="onboarding_name_label">姓名（可选）</string>
+    <string name="onboarding_name_placeholder">怎么称呼你？</string>
+    <string name="onboarding_gender">性别</string>
+    <string name="onboarding_gender_male">👨 男</string>
+    <string name="onboarding_gender_female">👩 女</string>
+    <string name="onboarding_age">年龄</string>
+    <string name="onboarding_age_placeholder">岁</string>
+    <string name="onboarding_height">身高</string>
+    <string name="onboarding_current_weight">当前体重</string>
+    <string name="onboarding_target_weight">目标体重</string>
+    <string name="onboarding_start">开始我的健身之旅 →</string>
+    <string name="onboarding_default_name">用户</string>
+    <string name="onboarding_validation_height">身高请输入 100–250 cm</string>
+    <string name="onboarding_validation_weight">体重请输入 30–300 kg</string>
+    <string name="onboarding_validation_target">目标体重请输入 30–300 kg</string>
+    <string name="onboarding_validation_age">年龄请输入 10–120 岁</string>
+
+    <!-- ========== 错误消息 ========== -->
+    <string name="error_api_key_required">请先在设置中配置 API Key</string>
+    <string name="error_base_url_required">请先在设置中配置 API 服务地址</string>
+    <string name="error_api_key_empty">请先输入 API Key</string>
+    <string name="error_model_required">请先选择模型或输入接入点 ID</string>
+    <string name="error_base_url_required_setup">请先输入 API 服务地址 (Base URL)</string>
+    <string name="error_save_failed">保存失败：%s</string>
+    <string name="error_network">网络错误：%s</string>
+    <string name="error_parse_failed">解析失败：%s</string>
+    <string name="error_ai_service">抱歉，AI 服务暂时出现了一些问题：%s</string>
+    <string name="error_ai_unable">抱歉 AI 暂时无法处理：%s</string>
+    <string name="error_analysis_failed">分析失败</string>
+    <string name="error_analysis_error">分析出错</string>
+    <string name="error_test_reply_ok">请回复：OK</string>
+    <string name="error_test_success">连接成功！模型回复：%s</string>
+    <string name="error_test_http">HTTP %1$s: %2$s</string>
+    <string name="error_model_empty">请选择模型或输入接入点 ID</string>
+    <string name="error_save_format">保存失败：%s</string>
+
+    <!-- ========== 日期格式 ========== -->
+    <string name="date_format_pattern">yyyy年M月d日 · E</string>
+
+    <!-- ========== 饮食记录页 ========== -->
+    <string name="meallog_today_records">今日记录</string>
+    <string name="meallog_previous_day">前一天</string>
+    <string name="meallog_next_day">后一天</string>
+    <string name="meallog_photo_recognize">拍照识别</string>
+    <string name="meallog_from_gallery">从相册选择</string>
+    <string name="meallog_remaining_budget">剩余摄入预算</string>
+    <string name="meallog_in_progress">进行中</string>
+    <string name="meallog_over_budget">已超标</string>
+    <string name="meallog_consumed">已摄入</string>
+    <string name="meallog_total_budget">总预算</string>
+    <string name="meallog_record_meal">记录 %s</string>
+    <string name="meallog_cancel_record">取消记录</string>
+    <string name="meallog_analyzing">正在分析…</string>
+    <string name="meallog_ai_convert">由 AI 自动转换 →</string>
+    <string name="meallog_take_photo_now">立即拍照</string>
+    <string name="meallog_local_gallery">本地相册</string>
+    <string name="meallog_ai_recognizing">AI 正在努力识别…</string>
+    <string name="meallog_total">合计</string>
+    <string name="meallog_save_to">保存到 %s</string>
+    <string name="meallog_what_did_you_eat">刚才吃了什么？</string>
+    <string name="meallog_food_example">例：红烧肉 280g，米饭 1 碗</string>
+    <string name="meallog_food_photo">食物照片</string>
+
+    <!-- ========== 记忆管理 ========== -->
+    <string name="memory_tab_core">核心记忆</string>
+    <string name="memory_tab_daily">每日笔记</string>
+    <string name="memory_tab_cleanup">数据清理</string>
+    <string name="memory_title">记忆管理</string>
+    <string name="memory_add">添加记忆</string>
+    <string name="memory_edit">编辑记忆</string>
+    <string name="memory_no_core">暂无核心记忆</string>
+    <string name="memory_ai_auto_record">AI 会在对话中自动记录你的偏好和习惯</string>
+    <string name="memory_no_daily">暂无每日笔记</string>
+    <string name="memory_notes_auto_gen">笔记会在每天结束时自动生成</string>
+    <string name="memory_unknown_date">未知日期</string>
+    <string name="memory_calories_prefix">热量：</string>
+    <string name="memory_ai_comment_prefix">AI 评语：</string>
+    <string name="memory_bulk_cleanup">批量清理数据</string>
+    <string name="memory_cleanup_warning">清理后的数据不可恢复，请谨慎操作。</string>
+    <string name="memory_clear_core_all">清空所有核心记忆</string>
+    <string name="memory_clear_core_desc">删除 AI 和用户手动添加的所有记忆条目</string>
+    <string name="memory_clear_daily_all">清空所有每日笔记</string>
+    <string name="memory_clear_daily_desc">删除所有自动生成的每日饮食总结</string>
+    <string name="memory_clear_chat_all">清空聊天记录</string>
+    <string name="memory_clear_chat_desc">删除与 AI 助理的所有对话历史</string>
+    <string name="memory_category">分类</string>
+    <string name="memory_cat_preference">偏好</string>
+    <string name="memory_cat_observation">观察</string>
+    <string name="memory_cat_habit">习惯</string>
+    <string name="memory_cat_goal">目标</string>
+    <string name="memory_cat_custom">自定义</string>
+    <string name="memory_source_ai">AI</string>
+    <string name="memory_source_user">用户</string>
+    <string name="memory_from_source">来自%s</string>
+    <string name="memory_content_label">记忆内容</string>
+    <string name="memory_content_hint">例：我不吃香菜</string>
+    <string name="memory_confirm_clear">确认清空</string>
+    <string name="memory_confirm_clear_msg">确定要清空%1$s吗？此操作不可恢复。</string>
+    <string name="memory_all_core_memories">所有核心记忆</string>
+    <string name="memory_all_daily_notes">所有每日笔记</string>
+    <string name="memory_all_chat_history">所有聊天记录</string>
+    <string name="memory_save">保存</string>
+
+    <!-- ========== 个人中心 ========== -->
+    <string name="profile_title">我的</string>
+    <string name="profile_update_health">更新健康资料</string>
+    <string name="profile_nickname">昵称</string>
+    <string name="profile_your_name">你的称呼</string>
+    <string name="profile_gender">性别</string>
+    <string name="profile_male">👨 男</string>
+    <string name="profile_female">👩 女</string>
+    <string name="profile_age">年龄</string>
+    <string name="profile_age_placeholder">岁</string>
+    <string name="profile_height">身高</string>
+    <string name="profile_current_weight">当前体重</string>
+    <string name="profile_target_weight">目标体重</string>
+    <string name="profile_save_update">保存更新</string>
+    <string name="profile_skip_edit">暂不修改</string>
+    <string name="profile_goal_weight">目标: %1$skg</string>
+    <string name="profile_body_data">身体数据</string>
+    <string name="profile_gender_label">性别</string>
+    <string name="profile_current_weight_label">当前体重</string>
+    <string name="profile_target_weight_label">目标体重</string>
+    <string name="profile_bmi_label">BMI</string>
+    <string name="profile_activity_label">活动等级</string>
+    <string name="profile_daily_budget_label">每日预算</string>
+    <string name="profile_sedentary">久坐</string>
+    <string name="profile_light_activity">轻度</string>
+    <string name="profile_moderate_activity">中度</string>
+    <string name="profile_heavy_activity">重度</string>
+    <string name="profile_achievements">成就</string>
+    <string name="profile_streak_days">%d天</string>
+    <string name="profile_consecutive_record">连续记录</string>
+    <string name="profile_total_weight_lost">累计减重</string>
+    <string name="profile_reshape_persona">重塑助理性格</string>
+    <string name="profile_recommend_templates">推荐模版</string>
+    <string name="profile_advanced_custom">进阶自定义（提示词）</string>
+    <string name="profile_assistant_hint">输入教练的具体性格特点…</string>
+    <string name="profile_confirm_modify">确认修改</string>
+    <string name="profile_ai_assistant_setting">AI 助理设定</string>
+    <string name="profile_custom_setting">自定义设定</string>
+    <string name="profile_settings">设置</string>
+    <string name="profile_goal_setting">目标设置</string>
+    <string name="profile_api_config">API 配置</string>
+    <string name="profile_dietary_prefs">饮食偏好</string>
+    <string name="profile_notification">通知设置</string>
+    <string name="profile_data_export">数据导出</string>
+    <string name="profile_memory_manage">记忆管理</string>
+    <string name="profile_about">关于应用</string>
+    <string name="profile_app_version">饱饱 v1.0.0</string>
+    <string name="profile_reset_title">重置所有数据？</string>
+    <string name="profile_reset_desc">这将清空你的身高、体重等个人健康资料，带你重新回到初始化引导流程。聊天记录和饮食记录将保留，但不再与个人偏好关联。</string>
+    <string name="profile_reset_confirm">确定重置</string>
+    <string name="profile_reset_all">重置所有资料</string>
+    <string name="profile_feature_wip">%s 功能开发中</string>
+
+    <!-- ========== 人设预设名称 ========== -->
+    <string name="persona_warm">温柔</string>
+    <string name="persona_sarcastic">毒舌</string>
+    <string name="persona_professional">干练</string>
+    <string name="persona_custom">自定义</string>
+
+    <!-- ========== MainActivity 崩溃对话框 ========== -->
+    <string name="main_crash_title">上次发生了崩溃</string>
+    <string name="main_copy_clipboard">已复制到剪贴板</string>
+    <string name="main_copy_log">复制日志</string>
+    <string name="main_close">关闭</string>
+
+    <!-- ========== 语言切换 ========== -->
+    <string name="settings_language">语言</string>
+    <string name="settings_language_system">跟随系统</string>
+    <string name="settings_language_zh">中文</string>
+    <string name="settings_language_en">English</string>
+</resources>
