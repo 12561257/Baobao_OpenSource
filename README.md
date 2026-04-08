@@ -1,6 +1,8 @@
 <div align="center">
 
-# 🥗 BaoBao FatLoss — 智能减脂 AI 助理
+# 🥗 饱饱减脂 (BaoBao FatLoss) — 智能减脂 AI 助理
+
+**[English](./README_EN.md) | 中文**
 
 **一个有长期记忆的 AI 私人减脂教练——它不只是计算，更是真正认识你。**
 
