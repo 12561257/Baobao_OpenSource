@@ -15,6 +15,9 @@ interface DailyNoteDao {
     @Query("SELECT * FROM daily_note ORDER BY date DESC LIMIT :limit")
     fun getRecentNotes(limit: Int = 7): Flow<List<DailyNoteEntity>>
 
+    @Query("SELECT * FROM daily_note ORDER BY date DESC LIMIT :limit")
+    suspend fun getRecentNotesOnce(limit: Int = 7): List<DailyNoteEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(note: DailyNoteEntity)
 

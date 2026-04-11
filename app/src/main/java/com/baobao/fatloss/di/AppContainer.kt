@@ -40,7 +40,7 @@ class AppContainer(application: Application) {
     val foodLogRepo = FoodLogRepository(foodLogDao)
     val weightRecordRepo = WeightRecordRepository(weightRecordDao)
     val chatMessageRepo = ChatMessageRepository(chatMessageDao)
-    val memoryManager = MemoryManager(userProfileDao, chatMessageDao, userMemoryDao)
+    val memoryManager = MemoryManager(userProfileDao, chatMessageDao, userMemoryDao, dailyNoteDao)
     val aiRepo = AiRepository(
         chatMessageDao,
         doubaoApiService,
