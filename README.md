@@ -10,7 +10,7 @@
 [![Kotlin](https://img.shields.io/badge/Language-Kotlin-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org)
 [![Jetpack Compose](https://img.shields.io/badge/UI-Jetpack%20Compose-4285F4?logo=jetpackcompose&logoColor=white)](https://developer.android.com/jetpack/compose)
 [![LLM](https://img.shields.io/badge/AI-OpenAI%20Compatible%20API-412991?logo=openai&logoColor=white)](https://platform.openai.com)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE)
 
 [功能演示](#-核心功能) · [架构设计](#-系统架构) · [快速开始](#-快速开始) · [技术栈](#-技术栈)
 
@@ -278,7 +278,7 @@ AI 回复不只是文字——LLM 输出结构化的"动作标记"，应用层�
 
 ## 📄 许可证
 
-本项目使用 MIT 许可证，详见 [LICENSE](LICENSE)。
+本项目使用 GPL-3.0 许可证，详见 [LICENSE](LICENSE)。
 
 ---
 
